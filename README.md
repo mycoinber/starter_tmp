@@ -72,4 +72,12 @@ yarn preview
 bun run preview
 ```
 
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+git submodule update --init --recursive
+git submodule add git@github.com:mycoinber/starter_tmp.git templates/starter
+
+git add .gitmodules templates/starter
+
+cd templates/starter # Перейти в папку сабмодуля
+git add . # Добавить изменения
+git commit -m "Update submodule content" # Создать коммит
+git push # Запушить изменения в репозиторий сабмодуля
