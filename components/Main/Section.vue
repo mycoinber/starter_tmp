@@ -7,12 +7,17 @@
   });
   const config = useRuntimeConfig();
 
-  const imageUrl = `unsplash${props.data.images[0].path}`;
+  const imageUrl = `unsplash${props.data.images[0]?.path}`;
 </script>
 
 <template>
   <section>
     <div v-html="data.content"></div>
-    <NuxtImg :src="imageUrl" :alt="data.images[0].title" width="400" />
+    <NuxtImg
+      v-if="data.image"
+      :src="imageUrl"
+      :alt="data.images[0]?.title"
+      width="400"
+    />
   </section>
 </template>

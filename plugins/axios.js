@@ -6,8 +6,8 @@ export default defineNuxtPlugin((nuxtApp) => {
 
   // Убедитесь, что backurl правильно настроен
   const backurl = import.meta.server
-    ? config.server.backHost || "http://localhost:3077" // Используйте контейнерный адрес или другой серверный URL
-    : config.public.backHost || "http://localhost:3077"; // Клиентский URL
+    ? config.server.backHost
+    : config.public.backHost;
 
   console.log(backurl);
   const instance = axios.create({

@@ -6,7 +6,7 @@ export default defineNuxtConfig({
   modules: [
     "@nuxt/content",
     "@nuxt/image-edge",
-    "nuxt-icon",
+    "@nuxt/icon",
     "@pinia/nuxt",
     "@nuxtjs/google-fonts",
     "@nuxt/image",
@@ -38,11 +38,11 @@ export default defineNuxtConfig({
   runtimeConfig: {
     public: {
       siteId: process.env.SITE_ID,
-      backHost: process.env.BACK_HOST || "http://localhost:3077",
+      backHost: process.env.BACK_HOST,
     },
     server: {
       siteId: process.env.SITE_ID,
-      backHost: process.env.BACK_HOST_SV || "http://localhost:3077",
+      backHost: process.env.BACK_HOST_SV,
     },
   },
   plugins: ["~/plugins/vue-query.ts"],
@@ -53,6 +53,12 @@ export default defineNuxtConfig({
     alias: {
       unsplash: "http://localhost:3077",
     },
+  },
+  googleFonts: {
+    families: {
+      Roboto: [400, 700],
+    },
+    display: "swap",
   },
   compatibilityDate: "2024-11-26",
 });
