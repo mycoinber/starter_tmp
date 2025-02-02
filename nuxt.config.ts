@@ -1,4 +1,7 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
+import { readFileSync } from "fs";
+import { resolve } from "path";
+
 export default defineNuxtConfig({
   devtools: { enabled: false },
   ssr: true,
@@ -11,7 +14,13 @@ export default defineNuxtConfig({
     "@nuxtjs/google-fonts",
     "@nuxt/image",
   ],
-
+  app: {
+    head: {
+      script: JSON.parse(readFileSync(resolve("site.json"), "utf-8")).map(
+        (html: any) => ({ innerHTML: html })
+      ),
+    },
+  },
   nitro: {
     node: true,
   },
