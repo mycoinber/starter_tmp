@@ -15,14 +15,41 @@ export default defineNuxtConfig({
     "@nuxt/image",
   ],
   app: {
-    head: {
-      script: JSON.parse(readFileSync(resolve("site.json"), "utf-8")).map(
-        (html: any) => ({ innerHTML: html })
-      ),
-    },
+    head: (() => {
+      // Проверяем, находимся ли мы на клиенте
+
+      const rawContent = JSON.parse(
+        readFileSync(resolve("site.json"), "utf-8")
+      );
+
+      // Преобразуем строки с тегами в массивы объектов для head
+      return {
+        link: rawContent
+          .filter((tag: string) => tag.startsWith("<link"))
+          .map((tag: string) => {
+            // Используем регулярные выражения для парсинга атрибутов
+            const attributes = Array.from(tag.matchAll(/(\w+)=["'](.*?)["']/g));
+            return Object.fromEntries(
+              attributes.map(([_, name, value]) => [name, value])
+            );
+          }),
+        meta: rawContent
+          .filter((tag: string) => tag.startsWith("<meta"))
+          .map((tag: string) => {
+            // Используем регулярные выражения для парсинга атрибутов
+            const attributes = Array.from(tag.matchAll(/(\w+)=["'](.*?)["']/g));
+            return Object.fromEntries(
+              attributes.map(([_, name, value]) => [name, value])
+            );
+          }),
+      };
+    })(),
   },
   nitro: {
     node: true,
+    prerender: {
+      ignore: ["/yandex-browser-manifest.json"],
+    },
   },
   vite: {
     server: {

@@ -9,9 +9,7 @@
   // Функция для получения страниц
   const fetchPages = async (siteId) => {
     try {
-      const response = await $axios.get(
-        `/pages/getAllSitePages?siteId=${siteId}`
-      );
+      const response = await $axios.get(`/pages/nav?siteId=${siteId}`);
       return response.data;
     } catch (error) {
       console.error("Error fetching pages:", error);

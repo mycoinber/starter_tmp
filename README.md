@@ -81,3 +81,10 @@ cd templates/starter # Перейти в папку сабмодуля
 git add . # Добавить изменения
 git commit -m "Update submodule content" # Создать коммит
 git push # Запушить изменения в репозиторий сабмодуля
+
+#Обновляем темплейт
+git add templates/starter
+git commit -m "Обновлен сабмодуль templates/starter"
+git push origin main # Или ваша основная ветка
+
+git submodule foreach --recursive git pull origin main

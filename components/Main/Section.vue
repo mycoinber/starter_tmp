@@ -11,11 +11,11 @@
 </script>
 
 <template>
-  <section>
+  <section :id="data.key">
     <div v-html="data.content"></div>
     <NuxtImg
-      v-if="data.image"
-      :src="imageUrl"
+      v-if="data.images && data.images.length !== 0"
+      :src="`unsplash${data.images[0]?.path}`"
       :alt="data.images[0]?.title"
       width="400"
     />
