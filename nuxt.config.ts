@@ -93,6 +93,7 @@ export default defineNuxtConfig({
   googleFonts: {
     families: {
       Roboto: [400, 700],
+      Inter: [400, 700], 
     },
     display: "swap",
   },

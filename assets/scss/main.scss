@@ -1,3 +1,30 @@
+@use "./variables/variables" as vars;
 @use "./variables/reset.css";
-@use "./variables/variables";
 @use "./variables/breakpoints";
+@use "./variables/text";
+
+body {
+    color: vars.$color-1;
+    font-family: vars.$font;
+}
+
+html {
+    font-family: $font;
+    font-size: 0.833vw;
+    color: vars.$color-1;
+
+    @include media(mobile) {
+        font-size: 4.103vw;
+    }
+}
+
+.container {
+    padding: 0 1rem;
+    margin: 0 auto;
+    width: 80%;
+    max-width: 100%;
+}
+
+main {
+    padding-top: 7rem;
+}
