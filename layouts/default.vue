@@ -23,7 +23,7 @@
 
 <template>
   <div>
-    <Header :data="data?.pages" />
+    <Header :data="data" />
     <slot />
   </div>
 </template>
