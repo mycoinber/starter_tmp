@@ -62,6 +62,9 @@ export default defineNuxtConfig({
       },
     },
     css: {
+      modules: {
+        generateScopedName: `[local]-${process.env.SlUG}_[hash:base64:5]`,
+      },
       preprocessorOptions: {
         scss: {
           additionalData:
@@ -93,7 +96,7 @@ export default defineNuxtConfig({
   googleFonts: {
     families: {
       Roboto: [400, 700],
-      Inter: [400, 700], 
+      Inter: [400, 700],
     },
     display: "swap",
   },

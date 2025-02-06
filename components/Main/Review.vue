@@ -1,6 +1,5 @@
 <script setup>
   import { ref, useSSRContext, onMounted, useCssModule } from "vue";
-  // Получаем объект со стилями, определёнными в данном компоненте
   const styles = useCssModule();
 
   const props = defineProps({
@@ -13,7 +12,6 @@
   const ssrContext = import.meta.server ? useSSRContext() : null;
   const contentHtml = ref("");
 
-  // Универсальная функция парсинга HTML
   const parseHTML = (html) => {
     if (import.meta.server) {
       const { parse } = require("node-html-parser");
@@ -39,24 +37,23 @@
       });
     };
 
-    addClasses('[itemtype="https://schema.org/FAQPage"]', "faqPage");
-    addClasses('[itemtype="https://schema.org/Question"]', "faqQuestion");
-    addClasses('[itemtype="https://schema.org/Answer"]', "faqAnswer");
-    addClasses('[itemprop="text"]', "faqAnswertext");
+    addClasses('[itemtype="https://schema.org/Review"]', "review");
+    addClasses('[itemprop="author"]', "reviewAuthor");
+    addClasses('[itemprop="datePublished"]', "reviewDate");
+    addClasses('[itemprop="reviewRating"]', "reviewRating");
+    addClasses('[itemprop="reviewBody"]', "reviewBody");
 
     return import.meta.server ? doc.toString() : doc.body.innerHTML;
   };
 
-  // Серверный рендеринг
-  if (import.meta.server && props.data.type === "section") {
+  if (import.meta.server && props.data.type === "reviews") {
     const modifiedHtml = processHtmlContent(props.data.content);
     ssrContext.modifiedHtml = modifiedHtml;
     contentHtml.value = modifiedHtml;
   }
 
-  // Клиентская гидратация
   onMounted(() => {
-    if (props.data.type === "section") {
+    if (props.data.type === "reviews") {
       contentHtml.value =
         ssrContext?.modifiedHtml || processHtmlContent(props.data.content);
     }
@@ -66,7 +63,7 @@
 <template>
   <section :id="data.key">
     <div :class="styles.container">
-      <div v-if="data.type === 'section'" v-html="contentHtml"></div>
+      <div v-if="data.type === 'reviews'" v-html="contentHtml"></div>
 
       <NuxtImg
         v-if="data.images?.length"
@@ -80,8 +77,35 @@
 
 <style module lang="scss">
   .container {
-    // Пример стилей для контейнера компонента
     padding: 20px;
     background-color: #f5f5f5;
+  }
+
+  .review {
+    padding: 15px;
+    border: 1px solid #ddd;
+    background-color: #fff;
+    margin-bottom: 15px;
+    border-radius: 5px;
+  }
+
+  .reviewAuthor {
+    font-weight: bold;
+    font-size: 18px;
+  }
+
+  .reviewDate {
+    font-size: 14px;
+    color: #666;
+  }
+
+  .reviewRating {
+    font-size: 16px;
+    color: #ff9800;
+  }
+
+  .reviewBody {
+    font-size: 16px;
+    margin-top: 10px;
   }
 </style>
