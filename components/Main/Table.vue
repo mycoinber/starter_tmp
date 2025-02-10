@@ -1,5 +1,7 @@
 <script setup>
   import { ref, useSSRContext, onMounted, useCssModule } from "vue";
+  import { parse } from "node-html-parser";
+
   const styles = useCssModule();
 
   const props = defineProps({
@@ -14,7 +16,6 @@
 
   const parseHTML = (html) => {
     if (import.meta.server) {
-      const { parse } = require("node-html-parser");
       return parse(html);
     } else {
       const parser = new DOMParser();

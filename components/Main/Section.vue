@@ -1,5 +1,6 @@
 <script setup>
   import { ref, useSSRContext, onMounted, useCssModule } from "vue";
+  import { parse } from "node-html-parser";
   // Получаем объект со стилями, определёнными в данном компоненте
   const styles = useCssModule();
 
@@ -10,13 +11,14 @@
     },
   });
 
+  console.log(props.data);
+
   const ssrContext = import.meta.server ? useSSRContext() : null;
   const contentHtml = ref("");
 
   // Универсальная функция парсинга HTML
   const parseHTML = (html) => {
     if (import.meta.server) {
-      const { parse } = require("node-html-parser");
       return parse(html);
     } else {
       const parser = new DOMParser();
@@ -61,6 +63,8 @@
         ssrContext?.modifiedHtml || processHtmlContent(props.data.content);
     }
   });
+
+  console.log("contentHtml", contentHtml.value);
 </script>
 
 <template>
