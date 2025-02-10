@@ -67,10 +67,11 @@ onMounted(() => {
   <section :id="data.key" :class="styles.block">
     <div class="container">
       <div :class="styles.wrapper">
-        <div v-if="data.type === 'section'" v-html="contentHtml"></div>
+        <div v-if="data.type === 'section'" v-html="contentHtml" :class="styles.content"></div>
 
-        <NuxtImg v-if="data.images?.length" :src="`unsplash${data.images[0]?.path}`" :alt="data.images[0]?.title"
-          width="400" />
+        <div v-if="data.images?.length" :class="styles.img">
+          <NuxtImg :src="`unsplash${data.images[0]?.path}`" :alt="data.images[0]?.title" width="400" />
+        </div>
       </div>
     </div>
   </section>
@@ -79,5 +80,32 @@ onMounted(() => {
 <style lang="scss" scoped module>
 .block {
   margin: 2rem 0;
+}
+
+.wrapper {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 2rem;
+  width: 100%;
+}
+
+.content {
+  flex: 1;
+}
+
+.img {
+  flex: 1;
+  aspect-ratio: 1/1;
+  border-radius: 0.625rem;
+  overflow: hidden;
+
+  img {
+    width: 100%;
+    height: 100%;
+  }
+}
+
+a {
+  color: var(--color-01);
 }
 </style>

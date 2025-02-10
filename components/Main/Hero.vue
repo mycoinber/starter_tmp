@@ -123,6 +123,7 @@ const props = defineProps({
   width: 100%;
   height: 65rem;
   position: relative;
+  z-index: 2;
 
   &::after {
     content: '';

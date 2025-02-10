@@ -64,8 +64,8 @@ onMounted(() => {
 </script>
 
 <template>
-  <section :id="data.key">
-    <div :class="styles.container">
+  <section :id="data.key" :class="styles.block">
+    <div class="container">
       <div v-if="data.type === 'faq'" v-html="contentHtml"></div>
 
       <NuxtImg v-if="data.images?.length" :src="`unsplash${data.images[0]?.path}`" :alt="data.images[0]?.title"
@@ -74,7 +74,7 @@ onMounted(() => {
   </section>
 </template>
 
-<style module lang="scss">
+<style lang="scss" scoped module>
 .faqPage {
   padding: 20px;
   background-color: #da1d1d;

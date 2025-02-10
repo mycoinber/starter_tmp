@@ -61,27 +61,16 @@ onMounted(() => {
 </script>
 
 <template>
-  <section :id="data.key">
-    <div :class="styles.container">
-      <div v-if="data.type === 'reviews'" v-html="contentHtml"></div>
-
-      <NuxtImg v-if="data.images?.length" :src="`unsplash${data.images[0]?.path}`" :alt="data.images[0]?.title"
-        width="400" />
+  <section :id="data.key" :class="styles.block" v-if="data.type === 'reviews'">
+    <div class="container">
+      <div v-html="contentHtml">
+      </div>
     </div>
   </section>
 </template>
 
-<style module lang="scss">
-.review {
-  padding: 15px;
-  margin-bottom: 15px;
-  border-radius: 5px;
-}
-
-.reviewAuthor {
-  font-weight: bold;
-  font-size: 18px;
-}
+<style lang="scss" module>
+.reviewAuthor {}
 
 .reviewDate {
   font-size: 14px;
@@ -96,5 +85,10 @@ onMounted(() => {
 .reviewBody {
   font-size: 16px;
   margin-top: 10px;
+}
+
+.reviews {
+  display: flex;
+  gap: 2rem;
 }
 </style>

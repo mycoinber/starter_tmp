@@ -1,8 +1,11 @@
 <script setup>
-import MainSection from "@/components/Main/Section.vue";
-import MainFaq from "@/components/Main/Faq.vue";
-import MainReview from "@/components/Main/Review.vue";
-import MainTable from "@/components/Main/Table.vue";
+import { useCssModule } from 'vue';
+import MainSection from '@/components/Main/Section.vue';
+import MainFaq from '@/components/Main/Faq.vue';
+import MainReview from '@/components/Main/Review.vue';
+import MainTable from '@/components/Main/Table.vue';
+
+const styles = useCssModule();
 
 const componentMap = {
   table: MainTable,
@@ -33,4 +36,4 @@ const props = defineProps({
   </div>
 </template>
 
-<style scoped></style>
+<style lang="scss" scoped module></style>

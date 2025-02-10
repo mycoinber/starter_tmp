@@ -51,7 +51,7 @@ function toggle() {
     width: 100%;
     padding: 1rem;
     border: 0.063rem solid var(--border);
-    border-radius: 0.25rem;
+    border-radius: 0.625rem;
     margin: 4rem 0;
     counter-reset: toc-counter;
     background: var(--background-02);
