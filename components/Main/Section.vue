@@ -68,24 +68,24 @@
 </script>
 
 <template>
-  <section :id="data.key">
-    <div :class="styles.container">
-      <div v-if="data.type === 'section'" v-html="contentHtml"></div>
+  <section :id="data.key" :class="styles.block">
+    <div class="container">
+      <div :class="styles.wrapper">
+        <div v-if="data.type === 'section'" v-html="contentHtml"></div>
 
-      <NuxtImg
-        v-if="data.images?.length"
-        :src="`unsplash${data.images[0]?.path}`"
-        :alt="data.images[0]?.title"
-        width="400"
-      />
+        <NuxtImg
+          v-if="data.images?.length"
+          :src="`unsplash${data.images[0]?.path}`"
+          :alt="data.images[0]?.title"
+          width="400"
+        />
+      </div>
     </div>
   </section>
 </template>
 
-<style module lang="scss">
-  .container {
-    // Пример стилей для контейнера компонента
-    padding: 20px;
-    background-color: #f5f5f5;
+<style lang="scss" scoped module>
+  .block {
+    margin: 2rem 0;
   }
 </style>

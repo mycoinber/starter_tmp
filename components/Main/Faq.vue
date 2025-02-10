@@ -80,11 +80,6 @@
 </template>
 
 <style module lang="scss">
-  .container {
-    // Пример стилей для контейнера компонента
-    padding: 20px;
-    background-color: #f5f5f5;
-  }
   .faqPage {
     padding: 20px;
     background-color: #da1d1d;

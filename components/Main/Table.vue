@@ -74,11 +74,6 @@
 </template>
 
 <style module lang="scss">
-  .container {
-    padding: 20px;
-    background-color: #f5f5f5;
-  }
-
   .styledTable {
     width: 100%;
     border-collapse: collapse;

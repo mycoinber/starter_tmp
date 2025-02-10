@@ -77,15 +77,8 @@
 </template>
 
 <style module lang="scss">
-  .container {
-    padding: 20px;
-    background-color: #f5f5f5;
-  }
-
   .review {
     padding: 15px;
-    border: 1px solid #ddd;
-    background-color: #fff;
     margin-bottom: 15px;
     border-radius: 5px;
   }

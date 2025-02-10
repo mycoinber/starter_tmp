@@ -3,15 +3,34 @@
 @use "./variables/breakpoints";
 @use "./variables/text";
 
+:root {
+    /* Цвета фона */
+    --background-01: #18181d;
+    --background-02: #2d3345;
+
+    /* Основные цвета */
+    --color-white: #ffffff;
+    --color-black: #000000;
+    --color-01: #e00840;
+    --color-02: #2b8ef9;
+    --color-03: #ffe500;
+
+    /* Границы */
+    --border: #545969;
+
+    /* Шрифты */
+    --font-01: "Inter", sans-serif;
+    --font-02: "Oswald", sans-serif;
+}
+
 body {
-    color: vars.$color-1;
-    font-family: vars.$font;
+    font-family: var(--font-01);
+    color: var(--color-white);
+    background: var(--background-01);
 }
 
 html {
-    font-family: $font;
     font-size: 0.833vw;
-    color: vars.$color-1;
 
     @include media(mobile) {
         font-size: 4.103vw;
@@ -25,6 +44,14 @@ html {
     max-width: 100%;
 }
 
-main {
-    padding-top: 7rem;
+.row {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.col {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
 }
