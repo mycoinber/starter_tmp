@@ -13,6 +13,7 @@ export default defineNuxtConfig({
     "@pinia/nuxt",
     "@nuxtjs/google-fonts",
     "@nuxt/image",
+    "nuxt-schema-org",
   ],
   app: {
     head: (() => {
@@ -52,15 +53,6 @@ export default defineNuxtConfig({
     },
   },
   vite: {
-    server: {
-      fs: {
-        // Allow serving files from one level up to the project root
-        allow: ["../pbn/*", "./"],
-      },
-      watch: {
-        usePolling: true,
-      },
-    },
     css: {
       modules: {
         generateScopedName: `[local]-${process.env.SlUG}_[hash:base64:5]`,
@@ -73,7 +65,16 @@ export default defineNuxtConfig({
         },
       },
     },
+    server: {
+      fs: {
+        allow: ["../pbn/*", "./"],
+      },
+      watch: {
+        usePolling: true,
+      },
+    },
   },
+
   runtimeConfig: {
     public: {
       siteId: process.env.SITE_ID,

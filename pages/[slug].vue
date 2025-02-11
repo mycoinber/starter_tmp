@@ -7,13 +7,14 @@
 <script setup>
   import { useNuxtApp } from "#app";
   import { useQuery } from "@tanstack/vue-query";
+  import { useCssModule } from "vue";
 
   const { $axios } = useNuxtApp();
+  const styles = useCssModule();
   const config = useRuntimeConfig();
   const siteId = config.public.siteId;
   const route = useRoute();
   const slug = route.params.slug;
-  console.log(slug);
   const fetchPage = async (siteId, slug = null) => {
     const params = { siteId };
 
@@ -81,26 +82,6 @@
   });
 </script>
 
-<style scoped>
-  body {
-    font-family: Arial, sans-serif;
-  }
-  header nav ul {
-    list-style-type: none;
-    padding: 0;
-  }
-  header nav ul li {
-    display: inline;
-    margin-right: 10px;
-  }
-  .breadcrumb {
-    font-size: 14px;
-  }
-  figure {
-    margin: 1em 0;
-  }
-  figcaption {
-    font-size: 0.9em;
-    color: #666;
-  }
+<style lang="scss" module>
+  /* Ваш SCSS-код */
 </style>

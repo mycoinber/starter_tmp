@@ -65,8 +65,8 @@
 </script>
 
 <template>
-  <section :id="data.key">
-    <div :class="styles.container">
+  <section :id="data.key" :class="styles.block">
+    <div class="container">
       <div v-if="data.type === 'faq'" v-html="contentHtml"></div>
 
       <NuxtImg
@@ -79,7 +79,7 @@
   </section>
 </template>
 
-<style module lang="scss">
+<style lang="scss" scoped module>
   .faqPage {
     padding: 20px;
     background-color: #da1d1d;
