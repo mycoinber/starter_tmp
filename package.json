@@ -19,11 +19,8 @@
     "js-cookie": "^3.0.5",
     "node-html-parser": "^7.0.1",
     "nuxt": "^3.15.2",
-<<<<<<< HEAD
     "nuxt-og-image": "^4.1.2",
     "nuxt-schema-org": "^4.1.1",
-=======
->>>>>>> 7ac13a31240a002242f3410cae408e27a3a9eb6e
     "vue": "latest",
     "vue-router": "latest"
   },
