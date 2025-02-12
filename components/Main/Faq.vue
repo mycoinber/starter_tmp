@@ -12,12 +12,14 @@ const props = defineProps({
 </script>
 
 <template>
-  <section :id="data.key" :class="styles.block">
+  <section :id="data.key" :class="styles.block" v-if="data.type === 'faq'">
     <div class="container">
-      <div v-if="data.type === 'faq'" :class="styles.faqPage" itemscope itemtype="https://schema.org/FAQPage">
+      <div :class="styles.faqPage" itemscope itemtype="https://schema.org/FAQPage">
         <div v-for="faq in data.faqs" :key="faq.question" :class="styles.faqQuestion" itemscope
           itemtype="https://schema.org/Question">
+
           <h3 itemprop="name">{{ faq.question }}</h3>
+
           <div :class="styles.faqAnswer" itemscope itemtype="https://schema.org/Answer">
             <p :class="styles.faqAnswertext" itemprop="text">
               {{ faq.answer }}
