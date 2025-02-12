@@ -1,5 +1,6 @@
 <script setup>
 import { ref, useSSRContext, onMounted, useCssModule } from "vue";
+import { parse } from "node-html-parser";
 // Получаем объект со стилями, определёнными в данном компоненте
 const styles = useCssModule();
 
@@ -16,7 +17,6 @@ const contentHtml = ref("");
 // Универсальная функция парсинга HTML
 const parseHTML = (html) => {
   if (import.meta.server) {
-    const { parse } = require("node-html-parser");
     return parse(html);
   } else {
     const parser = new DOMParser();
@@ -87,10 +87,6 @@ onMounted(() => {
   flex-wrap: nowrap;
   gap: 2rem;
   width: 100%;
-
-  @include media(mobile) {
-    flex-direction: column;
-  }
 }
 
 .content {

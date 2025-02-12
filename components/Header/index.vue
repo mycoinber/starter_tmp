@@ -28,19 +28,37 @@ const navigationLinks = computed(() =>
           </NuxtLink>
         </div>
 
+        <nav :class="styles.nav">
+          <ul :class="styles.navList">
+            <li v-for="(link, index) in navigationLinks" :key="index" :class="styles.navItem">
+              <NuxtLink :to="`/${link.slug}`">{{ link.name }}</NuxtLink>
+            </li>
+          </ul>
+        </nav>
 
-        <div :class="styles.buttons">
-          <GeneralButton :data="{ link: '/go', title: 'Логин', target: '_blank', rel: 'noopener noreferrer' }" />
+        <div class="row">
+          <ClientOnly>
+            <GeneralButton :data="{
+              link: '/go',
+              title: 'Логин',
+              target: '_blank',
+              rel: 'noopener noreferrer',
+            }" />
 
-          <GeneralButtonTwo
-            :data="{ link: '/go', title: 'Регистрация', target: '_blank', rel: 'noopener noreferrer' }" />
+            <GeneralButtonTwo :data="{
+              link: '/go',
+              title: 'Регистрация',
+              target: '_blank',
+              rel: 'noopener noreferrer',
+            }" />
+          </ClientOnly>
         </div>
       </div>
     </div>
   </header>
 </template>
 
-<style lang="scss" scoped module>
+<style lang="scss" module>
 .header {
   position: absolute;
   top: 0;
@@ -77,13 +95,31 @@ const navigationLinks = computed(() =>
   }
 }
 
-.buttons {
+.navList {
   display: flex;
   align-items: center;
-  gap: 1rem;
+  gap: 2rem;
+  list-style: none;
+  margin: 0;
+  overflow: hidden;
+}
 
-  @include media(mobile) {
-    display: none;
+.navItem {
+  a {
+    display: block;
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--color-white);
+    white-space: nowrap;
+    transition: color 0.3s;
+
+    &:hover {
+      color: var(--color-01);
+    }
+
+    &.router-link-active {
+      color: var(--color-01);
+    }
   }
 }
 </style>

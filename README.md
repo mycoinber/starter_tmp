@@ -88,3 +88,5 @@ git commit -m "Обновлен сабмодуль templates/starter"
 git push origin main # Или ваша основная ветка
 
 git submodule foreach --recursive git pull origin main
+
+git add remote origin git@github.com:mycoinber/starter_tmp.git

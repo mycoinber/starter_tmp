@@ -1,94 +1,109 @@
 <script setup>
-import { ref, useSSRContext, onMounted, useCssModule } from "vue";
-const styles = useCssModule();
+  import { NuxtImg } from "#components";
+  import { useCssModule } from "vue";
 
-const props = defineProps({
-  data: {
-    type: Object,
-    default: () => ({}),
-  },
-});
+  const styles = useCssModule();
 
-const ssrContext = import.meta.server ? useSSRContext() : null;
-const contentHtml = ref("");
-
-const parseHTML = (html) => {
-  if (import.meta.server) {
-    const { parse } = require("node-html-parser");
-    return parse(html);
-  } else {
-    const parser = new DOMParser();
-    return parser.parseFromString(html, "text/html");
-  }
-};
-
-const processHtmlContent = (htmlString) => {
-  const doc = parseHTML(htmlString);
-
-  const addClasses = (selector, styleClass) => {
-    const elements = doc.querySelectorAll(selector);
-    elements.forEach((el) => {
-      if (import.meta.server) {
-        const classAttr = el.getAttribute("class") || "";
-        el.setAttribute("class", `${classAttr} ${styles[styleClass]}`);
-      } else {
-        el.classList.add(styles[styleClass]);
-      }
-    });
-  };
-
-  addClasses('[itemtype="https://schema.org/Review"]', "review");
-  addClasses('[itemprop="author"]', "reviewAuthor");
-  addClasses('[itemprop="datePublished"]', "reviewDate");
-  addClasses('[itemprop="reviewRating"]', "reviewRating");
-  addClasses('[itemprop="reviewBody"]', "reviewBody");
-
-  return import.meta.server ? doc.toString() : doc.body.innerHTML;
-};
-
-if (import.meta.server && props.data.type === "reviews") {
-  const modifiedHtml = processHtmlContent(props.data.content);
-  ssrContext.modifiedHtml = modifiedHtml;
-  contentHtml.value = modifiedHtml;
-}
-
-onMounted(() => {
-  if (props.data.type === "reviews") {
-    contentHtml.value =
-      ssrContext?.modifiedHtml || processHtmlContent(props.data.content);
-  }
-});
+  const props = defineProps({
+    data: {
+      type: Object,
+      default: () => ({}),
+    },
+  });
 </script>
 
 <template>
-  <section :id="data.key" :class="styles.block" v-if="data.type === 'reviews'">
-    <div class="container">
-      <div v-html="contentHtml">
+  <div v-if="data?.reviews.length" :class="styles.reviews">
+    <h2 :class="styles.title">Отзывы</h2>
+    <div
+      v-for="(review, index) in data?.reviews"
+      :key="index"
+      :class="styles.review"
+      itemscope
+      itemtype="http://schema.org/Review"
+    >
+      <div :class="styles.header">
+        <span :class="styles.author" itemprop="author">{{ review.name }}</span>
+        <span :class="styles.date" itemprop="datePublished">{{
+          review.date
+        }}</span>
+        <span
+          :class="styles.rating"
+          itemprop="reviewRating"
+          itemscope
+          itemtype="http://schema.org/Rating"
+        >
+          <span itemprop="ratingValue">{{ review.rating }}</span> из 5
+        </span>
+      </div>
+      <p :class="styles.body" itemprop="reviewBody">{{ review.review }}</p>
+      <div :class="styles.images">
+        <NuxtImg
+          v-for="(image, imgIndex) in review.images"
+          :key="imgIndex"
+          :src="`unsplash${image?.path}`"
+          :alt="image?.title"
+          width="400"
+          itemprop="image"
+        />
       </div>
     </div>
-  </section>
+  </div>
 </template>
 
 <style lang="scss" module>
-.reviewAuthor {}
+  .reviews {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
 
-.reviewDate {
-  font-size: 14px;
-  color: #666;
-}
+  .title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 1rem;
+  }
 
-.reviewRating {
-  font-size: 16px;
-  color: #ff9800;
-}
+  .review {
+    border: 1px solid #ddd;
+    padding: 1rem;
+    border-radius: 8px;
+  }
 
-.reviewBody {
-  font-size: 16px;
-  margin-top: 10px;
-}
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+  }
 
-.reviews {
-  display: flex;
-  gap: 2rem;
-}
+  .author {
+    font-weight: bold;
+  }
+
+  .date {
+    font-size: 14px;
+    color: #666;
+  }
+
+  .rating {
+    font-size: 16px;
+    color: #ff9800;
+  }
+
+  .body {
+    font-size: 16px;
+    margin-top: 10px;
+  }
+
+  .images {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 1rem;
+  }
+
+  .images img {
+    max-width: 100px;
+    border-radius: 4px;
+  }
 </style>

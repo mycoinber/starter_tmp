@@ -1,5 +1,7 @@
 <script setup>
 import { ref, useSSRContext, onMounted, useCssModule } from "vue";
+import { parse } from "node-html-parser";
+
 const styles = useCssModule();
 
 const props = defineProps({
@@ -14,7 +16,6 @@ const contentHtml = ref("");
 
 const parseHTML = (html) => {
   if (import.meta.server) {
-    const { parse } = require("node-html-parser");
     return parse(html);
   } else {
     const parser = new DOMParser();
@@ -25,6 +26,7 @@ const parseHTML = (html) => {
 const processHtmlContent = (htmlString) => {
   const doc = parseHTML(htmlString);
 
+  // Функция для добавления классов к элементам
   const addClasses = (selector, styleClass) => {
     const elements = doc.querySelectorAll(selector);
     elements.forEach((el) => {
@@ -37,6 +39,24 @@ const processHtmlContent = (htmlString) => {
     });
   };
 
+  // Оборачиваем таблицу в дополнительный div
+  const table = doc.querySelector("table");
+  if (table) {
+    if (import.meta.server) {
+      // Серверный рендеринг: оборачиваем таблицу с помощью строковой модификации
+      const wrapperHtml = `<div class="${styles.tableWrapper
+        }">${table.toString()}</div>`;
+      table.replaceWith(parse(wrapperHtml));
+    } else {
+      // Клиентский рендеринг: создаем DOM-элемент
+      const wrapper = document.createElement("div");
+      wrapper.className = styles.tableWrapper;
+      table.parentNode.insertBefore(wrapper, table);
+      wrapper.appendChild(table);
+    }
+  }
+
+  // Добавляем классы к таблице и её элементам
   addClasses("table", "styledTable");
   addClasses("th", "tableHeader");
   addClasses("td", "tableCell");
