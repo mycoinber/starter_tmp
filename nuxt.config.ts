@@ -14,6 +14,7 @@ export default defineNuxtConfig({
     "@nuxtjs/google-fonts",
     "@nuxt/image",
     "nuxt-schema-org",
+    "nuxt-og-image",
   ],
   app: {
     head: (() => {

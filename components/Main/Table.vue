@@ -26,6 +26,7 @@
   const processHtmlContent = (htmlString) => {
     const doc = parseHTML(htmlString);
 
+    // Функция для добавления классов к элементам
     const addClasses = (selector, styleClass) => {
       const elements = doc.querySelectorAll(selector);
       elements.forEach((el) => {
@@ -38,6 +39,25 @@
       });
     };
 
+    // Оборачиваем таблицу в дополнительный div
+    const table = doc.querySelector("table");
+    if (table) {
+      if (import.meta.server) {
+        // Серверный рендеринг: оборачиваем таблицу с помощью строковой модификации
+        const wrapperHtml = `<div class="${
+          styles.tableWrapper
+        }">${table.toString()}</div>`;
+        table.replaceWith(parse(wrapperHtml));
+      } else {
+        // Клиентский рендеринг: создаем DOM-элемент
+        const wrapper = document.createElement("div");
+        wrapper.className = styles.tableWrapper;
+        table.parentNode.insertBefore(wrapper, table);
+        wrapper.appendChild(table);
+      }
+    }
+
+    // Добавляем классы к таблице и её элементам
     addClasses("table", "styledTable");
     addClasses("th", "tableHeader");
     addClasses("td", "tableCell");
@@ -60,35 +80,19 @@
 </script>
 
 <template>
-  <section :id="data.key">
-    <div :class="styles.container">
-      <div v-if="data.type === 'table'" v-html="contentHtml"></div>
+  <section :id="data.key" v-if="data.type === 'table'" :class="styles.block">
+    <div class="container">
+      <div v-html="contentHtml" :class="styles.wrapper"></div>
     </div>
-    <NuxtImg
-      v-if="data.images?.length"
-      :src="`unsplash${data.images[0]?.path}`"
-      :alt="data.images[0]?.title"
-      width="400"
-    />
   </section>
 </template>
 
-<style module lang="scss">
-  .styledTable {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
+<style lang="scss" scoped module>
+  .block {
+    margin: 2rem 0;
   }
 
-  .tableHeader {
-    background-color: #007bff;
-    color: white;
-    padding: 10px;
-    text-align: left;
-  }
-
-  .tableCell {
-    border: 1px solid #ddd;
-    padding: 8px;
+  .wrapper {
+    overflow: hidden;
   }
 </style>

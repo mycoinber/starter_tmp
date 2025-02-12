@@ -40,9 +40,9 @@
   watchEffect(() => {
     if (data.value) {
       const pageHead = data.value.head;
-      const og = pageHead.open_graph || {};
-      const twitter = pageHead.twitter_card || {};
-      const essential = pageHead.essential_links || {};
+      const og = pageHead?.open_graph || {};
+      const twitter = pageHead?.twitter_card || {};
+      const essential = pageHead?.essential_links || {};
 
       useHead({
         title: pageHead.title || "",

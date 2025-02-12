@@ -17,7 +17,7 @@
 
 <template>
   <MainHero />
-
+  <h1>{{ data.h1 }}</h1>
   <MainTableOfContent
     v-if="data.sections && data.sections.length"
     :data="data"
@@ -30,6 +30,7 @@
       :data="item"
     />
   </div>
+  <MainAuthor v-if="data.aiauthor" :data="data" />
   <MainReview v-if="data.reviews" :data="data" />
 </template>
 
