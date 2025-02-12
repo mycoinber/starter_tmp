@@ -25,20 +25,31 @@
       itemtype="http://schema.org/Review"
     >
       <div :class="styles.header">
-        <span :class="styles.author" itemprop="author">{{ review.name }}</span>
-        <span :class="styles.date" itemprop="datePublished">{{
-          review.date
-        }}</span>
-        <span
+        <span :class="styles.author" itemprop="author">
+          {{ review.name }}
+        </span>
+
+        <span :class="styles.date" itemprop="datePublished">
+          {{ review.date }}
+        </span>
+
+        <div
           :class="styles.rating"
           itemprop="reviewRating"
           itemscope
           itemtype="http://schema.org/Rating"
         >
-          <span itemprop="ratingValue">{{ review.rating }}</span> из 5
-        </span>
+          <span itemprop="ratingValue">
+            {{ review.rating }}
+          </span>
+          из 5
+        </div>
       </div>
-      <p :class="styles.body" itemprop="reviewBody">{{ review.review }}</p>
+
+      <p :class="styles.body" itemprop="reviewBody">
+        {{ review.review }}
+      </p>
+
       <div :class="styles.images">
         <NuxtImg
           v-for="(image, imgIndex) in review.images"

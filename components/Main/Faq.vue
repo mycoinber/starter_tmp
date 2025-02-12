@@ -29,6 +29,7 @@
           itemtype="https://schema.org/Question"
         >
           <h3 itemprop="name">{{ faq.question }}</h3>
+
           <div
             :class="styles.faqAnswer"
             itemscope

@@ -1,13 +1,13 @@
 <script setup>
-  import { useCssModule } from "vue";
-  const styles = useCssModule();
+import { useCssModule } from "vue";
+const styles = useCssModule();
 
-  const props = defineProps({
-    data: {
-      type: Object,
-      default: () => ({}),
-    },
-  });
+const props = defineProps({
+  data: {
+    type: Object,
+    default: () => ({}),
+  },
+});
 </script>
 
 <template>
@@ -16,19 +16,17 @@
       <div :class="styles.wrapper">
         <div :class="styles.content">
           <div :class="styles.contentHead">
-            <h1 :class="styles.title">Заголовок H1</h1>
+            <span :class="styles.title">Заголовок</span>
 
-            <div class="row">
+            <div :class="styles.contentBlock">
               <span :class="styles.span">Игра только 18+!</span>
 
-              <GeneralButton
-                :data="{
-                  link: '/go',
-                  title: 'Играть на деньги',
-                  target: '_blank',
-                  rel: 'noopener noreferrer',
-                }"
-              />
+              <GeneralButton :data="{
+                link: '/go',
+                title: 'Играть на деньги',
+                target: '_blank',
+                rel: 'noopener noreferrer',
+              }" :class="styles.contentButton" />
             </div>
           </div>
 
@@ -37,15 +35,12 @@
               <NuxtImg src="/hero.png" />
             </div>
 
-            <GeneralButtonThree
-              :data="{
-                link: '/go',
-                title: 'Играть',
-                target: '_blank',
-                rel: 'noopener noreferrer',
-              }"
-              style="width: 25%"
-            />
+            <GeneralButtonThree :data="{
+              link: '/go',
+              title: 'Играть',
+              target: '_blank',
+              rel: 'noopener noreferrer',
+            }" style="width: 25%" />
           </div>
         </div>
 
@@ -55,24 +50,17 @@
               <NuxtImg src="/bg.png" />
             </div>
 
-            <span :class="styles.offerTitle"
-              >Приветственный Бонус +120% от 1000$</span
-            >
+            <span :class="styles.offerTitle">Приветственный Бонус +120% от 1000$</span>
 
             <div :class="styles.offerContent">
-              <span :class="styles.offerBonus"
-                >Приветственный Бонус +120% от 1000 USDT</span
-              >
+              <span :class="styles.offerBonus">Приветственный Бонус +120% от 1000 USDT</span>
 
-              <GeneralButton
-                :data="{
-                  link: '/go',
-                  title: 'Бонус',
-                  target: '_blank',
-                  rel: 'noopener noreferrer',
-                }"
-                style="width: 100%"
-              />
+              <GeneralButton :data="{
+                link: '/go',
+                title: 'Бонус',
+                target: '_blank',
+                rel: 'noopener noreferrer',
+              }" style="width: 100%" />
 
               <div :class="styles.offerDesc">
                 <span :class="styles.offerSpan">18+</span>
@@ -89,24 +77,17 @@
               <NuxtImg src="/bg.png" />
             </div>
 
-            <span :class="styles.offerTitle"
-              >Приветственный Бонус +120% от 1000$</span
-            >
+            <span :class="styles.offerTitle">Приветственный Бонус +120% от 1000$</span>
 
             <div :class="styles.offerContent">
-              <span :class="styles.offerBonus"
-                >Приветственный Бонус +120% от 1000 USDT</span
-              >
+              <span :class="styles.offerBonus">Приветственный Бонус +120% от 1000 USDT</span>
 
-              <GeneralButton
-                :data="{
-                  link: '/go',
-                  title: 'Бонус',
-                  target: '_blank',
-                  rel: 'noopener noreferrer',
-                }"
-                style="width: 100%"
-              />
+              <GeneralButton :data="{
+                link: '/go',
+                title: 'Бонус',
+                target: '_blank',
+                rel: 'noopener noreferrer',
+              }" style="width: 100%" />
 
               <div :class="styles.offerDesc">
                 <span :class="styles.offerSpan">18+</span>
@@ -120,27 +101,20 @@
 
           <div :class="styles.offer">
             <div :class="styles.offerImg">
-              <NuxtImg src="/bg.png" />
+              <NuxtImg src="/bg.png" alt="Приветственный Бонус +120% от 1000$" />
             </div>
 
-            <span :class="styles.offerTitle"
-              >Приветственный Бонус +120% от 1000$</span
-            >
+            <span :class="styles.offerTitle">Приветственный Бонус +120% от 1000$</span>
 
             <div :class="styles.offerContent">
-              <span :class="styles.offerBonus"
-                >Приветственный Бонус +120% от 1000 USDT</span
-              >
+              <span :class="styles.offerBonus">Приветственный Бонус +120% от 1000 USDT</span>
 
-              <GeneralButton
-                :data="{
-                  link: '/go',
-                  title: 'Бонус',
-                  target: '_blank',
-                  rel: 'noopener noreferrer',
-                }"
-                style="width: 100%"
-              />
+              <GeneralButton :data="{
+                link: '/go',
+                title: 'Бонус',
+                target: '_blank',
+                rel: 'noopener noreferrer',
+              }" style="width: 100%" />
 
               <div :class="styles.offerDesc">
                 <span :class="styles.offerSpan">18+</span>
@@ -161,194 +135,231 @@
   </section>
 </template>
 
-<style lang="scss" module>
-  .block {
-    width: 100%;
-    height: 65rem;
-    position: relative;
-    z-index: 2;
+<style lang="scss" scoped module>
+.block {
+  width: 100%;
+  height: 65rem;
+  position: relative;
+  z-index: 2;
+  margin-bottom: 4rem;
 
-    &::after {
-      content: "";
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      height: 70%;
-      z-index: -1;
-      background: linear-gradient(
-        to bottom,
-        rgba(255, 255, 255, 0),
-        var(--background-01)
-      );
-      pointer-events: none;
-    }
+  @include media(mobile) {
+    height: fit-content;
   }
 
-  .wrapper {
-    display: grid;
-    grid-template-columns: 75% 25%;
-    gap: 2rem;
-    padding-top: 8rem;
-  }
-
-  .img {
+  &::after {
+    content: '';
     position: absolute;
-    top: 0;
+    bottom: 0;
     left: 0;
     width: 100%;
-    height: 100%;
-    z-index: -2;
-
-    img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
+    height: 70%;
+    z-index: -1;
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0), var(--background-01));
+    pointer-events: none;
   }
+}
 
-  .content {
+.wrapper {
+  display: grid;
+  grid-template-columns: 75% 25%;
+  gap: 2rem;
+
+  @include media(mobile) {
     display: flex;
     flex-direction: column;
-    gap: 1rem;
-    padding: 1rem;
-    border: 0.063rem solid var(--border);
-    border-radius: 0.625rem;
-    background: var(--background-02);
   }
+}
 
-  .contentHead {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 1rem;
-    width: 100%;
-  }
+.img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -2;
 
-  .contentMain {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    height: 40rem;
-    position: relative;
-    border-radius: 0.625rem;
-    overflow: hidden;
-  }
-
-  .contentImg {
-    position: absolute;
-    top: 0;
-    left: 0;
+  img {
     width: 100%;
     height: 100%;
+    object-fit: cover;
 
-    img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
+    @include media(mobile) {
+      object-fit: contain;
+      object-position: top center;
     }
   }
+}
 
-  .title {
-    font-family: var(--font-02);
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1rem;
+  border: 0.063rem solid var(--border);
+  border-radius: 0.625rem;
+  background: var(--background-02);
+}
+
+.contentHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  width: 100%;
+}
+
+.contentMain {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 40rem;
+  position: relative;
+  border-radius: 0.625rem;
+  overflow: hidden;
+
+  @include media(mobile) {
+    height: 20rem;
+  }
+}
+
+.contentBlock {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+
+  @include media(mobile) {
+    display: none;
+  }
+}
+
+.contentImg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+.title {
+  font-family: var(--font-02);
+  font-size: 1.5rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  white-space: nowrap;
+  max-width: 100%;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+
+  @include media(mobile) {
     font-size: 1.25rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    white-space: nowrap;
-    max-width: 100%;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    margin: 0;
-    padding: 0;
+    margin: 0 auto;
+    text-align: center;
+  }
+}
+
+.span {
+  font-size: 0.875rem;
+  opacity: 0.5;
+}
+
+.offers {
+  display: flex;
+  flex-direction: column;
+  gap: 2.35rem;
+}
+
+.offer {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: 1rem;
+  position: relative;
+  border: 0.063rem solid var(--border);
+  border-radius: 0.625rem;
+  background: var(--background-02);
+}
+
+.offerImg {
+  position: absolute;
+  left: -1rem;
+  top: -1rem;
+  width: 3.5rem;
+  height: 3.5rem;
+  border-radius: 50%;
+  border: 0.063rem solid var(--border);
+  overflow: hidden;
+
+  @include media(mobile) {
+    left: -0.5rem;
+    top: -0.5rem;
+    width: 3rem;
+    height: 3rem;
   }
 
-  .span {
-    font-size: 0.875rem;
-    opacity: 0.5;
-  }
-
-  .offers {
-    display: flex;
-    flex-direction: column;
-    gap: 2.35rem;
-  }
-
-  .offer {
-    display: flex;
-    flex-direction: column;
+  img {
     width: 100%;
-    padding: 1rem;
-    position: relative;
-    border: 0.063rem solid var(--border);
-    border-radius: 0.625rem;
-    background: var(--background-02);
+    height: 100%;
+    object-fit: cover;
   }
+}
 
-  .offerImg {
-    position: absolute;
-    left: -1rem;
-    top: -1rem;
-    width: 3.5rem;
-    height: 3.5rem;
-    border-radius: 50%;
-    border: 0.063rem solid var(--border);
-    overflow: hidden;
+.offerContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
 
-    img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
+.offerTitle {
+  font-family: var(--font-02);
+  font-size: 1.125rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  text-align: center;
+  white-space: nowrap;
+  max-width: 100%;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  padding-left: 2rem;
+  margin-bottom: 1rem;
+}
+
+.offerBonus {
+  font-family: var(--font-02);
+  font-size: 1.125rem;
+  font-weight: 500;
+  line-height: 120%;
+  color: var(--color-03);
+  text-align: center;
+  text-transform: uppercase;
+  padding-top: 1rem;
+  border-top: 0.063rem solid var(--border);
+}
+
+.offerDesc {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.offerSpan {
+  font-size: 0.875rem;
+  opacity: 0.5;
+  padding-right: 0.5rem;
+  border-right: 0.125rem solid var(--border);
+
+  &:last-child {
+    border-right: none;
   }
-
-  .offerContent {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 1rem;
-  }
-
-  .offerTitle {
-    font-family: var(--font-02);
-    font-size: 1.125rem;
-    font-weight: 500;
-    text-transform: uppercase;
-    text-align: center;
-    white-space: nowrap;
-    max-width: 100%;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    padding-left: 2rem;
-    margin-bottom: 1rem;
-  }
-
-  .offerBonus {
-    font-family: var(--font-02);
-    font-size: 1.125rem;
-    font-weight: 500;
-    line-height: 120%;
-    color: var(--color-03);
-    text-align: center;
-    text-transform: uppercase;
-    padding-top: 1rem;
-    border-top: 0.063rem solid var(--border);
-  }
-
-  .offerDesc {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-  }
-
-  .offerSpan {
-    font-size: 0.875rem;
-    opacity: 0.5;
-    padding-right: 0.5rem;
-    border-right: 0.125rem solid var(--border);
-
-    &:last-child {
-      border-right: none;
-    }
-  }
+}
 </style>

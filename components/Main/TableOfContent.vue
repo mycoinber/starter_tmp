@@ -47,12 +47,19 @@ function toggle() {
 </template>
 
 <style lang="scss" scoped module>
+.block {
+    margin: 2rem 0;
+
+    @include media(mobile) {
+        margin: 1rem 0;
+    }
+}
+
 .wrapper {
     width: 100%;
     padding: 1rem;
     border: 0.063rem solid var(--border);
     border-radius: 0.625rem;
-    margin: 4rem 0;
     counter-reset: toc-counter;
     background: var(--background-02);
 }
@@ -89,6 +96,7 @@ function toggle() {
 }
 
 .link {
+    color: var(--color-white);
     position: relative;
     padding-left: 2rem;
     transition: color 0.3s;
