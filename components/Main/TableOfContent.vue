@@ -89,6 +89,7 @@ function toggle() {
 }
 
 .link {
+    color: var(--color-white);
     position: relative;
     padding-left: 2rem;
     transition: color 0.3s;

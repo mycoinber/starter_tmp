@@ -28,15 +28,8 @@ const navigationLinks = computed(() =>
           </NuxtLink>
         </div>
 
-        <nav :class="styles.nav">
-          <ul :class="styles.navList">
-            <li v-for="(link, index) in navigationLinks" :key="index" :class="styles.navItem">
-              <NuxtLink :to="`/${link.slug}`">{{ link.name }}</NuxtLink>
-            </li>
-          </ul>
-        </nav>
 
-        <div class="row">
+        <div :class="styles.buttons">
           <GeneralButton :data="{ link: '/go', title: 'Логин', target: '_blank', rel: 'noopener noreferrer' }" />
 
           <GeneralButtonTwo
@@ -84,31 +77,13 @@ const navigationLinks = computed(() =>
   }
 }
 
-.navList {
+.buttons {
   display: flex;
   align-items: center;
-  gap: 2rem;
-  list-style: none;
-  margin: 0;
-  overflow: hidden;
-}
+  gap: 1rem;
 
-.navItem {
-  a {
-    display: block;
-    font-size: 1rem;
-    font-weight: 500;
-    color: var(--color-white);
-    white-space: nowrap;
-    transition: color 0.3s;
-
-    &:hover {
-      color: var(--color-01);
-    }
-
-    &.router-link-active {
-      color: var(--color-01);
-    }
+  @include media(mobile) {
+    display: none;
   }
 }
 </style>

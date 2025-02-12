@@ -87,6 +87,10 @@ onMounted(() => {
   flex-wrap: nowrap;
   gap: 2rem;
   width: 100%;
+
+  @include media(mobile) {
+    flex-direction: column;
+  }
 }
 
 .content {

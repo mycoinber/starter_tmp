@@ -21,7 +21,7 @@ const props = defineProps({
               Заголовок H1
             </h1>
 
-            <div class="row">
+            <div :class="styles.contentBlock">
               <span :class="styles.span">Игра только 18+!</span>
 
               <GeneralButton
@@ -125,6 +125,10 @@ const props = defineProps({
   position: relative;
   z-index: 2;
 
+  @include media(mobile) {
+    height: fit-content;
+  }
+
   &::after {
     content: '';
     position: absolute;
@@ -135,7 +139,6 @@ const props = defineProps({
     z-index: -1;
     background: linear-gradient(to bottom, rgba(255, 255, 255, 0), var(--background-01));
     pointer-events: none;
-
   }
 }
 
@@ -144,6 +147,11 @@ const props = defineProps({
   grid-template-columns: 75% 25%;
   gap: 2rem;
   padding-top: 8rem;
+
+  @include media(mobile) {
+    display: flex;
+    flex-direction: column;
+  }
 }
 
 .img {
@@ -158,6 +166,11 @@ const props = defineProps({
     width: 100%;
     height: 100%;
     object-fit: cover;
+
+    @include media(mobile) {
+      object-fit: contain;
+      object-position: top center;
+    }
   }
 }
 
@@ -188,6 +201,20 @@ const props = defineProps({
   position: relative;
   border-radius: 0.625rem;
   overflow: hidden;
+
+  @include media(mobile) {
+    height: 20rem;
+  }
+}
+
+.contentBlock {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+
+  @include media(mobile) {
+    display: none;
+  }
 }
 
 .contentImg {
@@ -206,7 +233,7 @@ const props = defineProps({
 
 .title {
   font-family: var(--font-02);
-  font-size: 1.25rem;
+  font-size: 1.5rem;
   font-weight: 600;
   text-transform: uppercase;
   white-space: nowrap;
@@ -215,6 +242,12 @@ const props = defineProps({
   overflow: hidden;
   margin: 0;
   padding: 0;
+
+  @include media(mobile) {
+    font-size: 1.25rem;
+    margin: 0 auto;
+    text-align: center;
+  }
 }
 
 .span {
@@ -248,6 +281,13 @@ const props = defineProps({
   border-radius: 50%;
   border: 0.063rem solid var(--border);
   overflow: hidden;
+
+  @include media(mobile) {
+    left: -0.5rem;
+    top: -0.5rem;
+    width: 3rem;
+    height: 3rem;
+  }
 
   img {
     width: 100%;

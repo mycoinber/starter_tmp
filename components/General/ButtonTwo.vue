@@ -27,7 +27,7 @@ const props = defineProps({
     width: fit-content;
     min-width: 8rem;
     padding: 1rem 1.5rem;
-    border-radius: 0.25rem;
+    border-radius: 0.4rem;
     position: relative;
     z-index: 1;
     overflow: hidden;

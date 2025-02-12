@@ -1,4 +1,7 @@
 <script setup>
+import { useCssModule } from "vue";
+const styles = useCssModule();
+
 const props = defineProps({
   data: {
     type: Object,
@@ -15,54 +18,67 @@ const navigationLinks = computed(() =>
 </script>
 
 <template>
-  <footer class="footer">
+  <footer :class="styles.footer">
     <div class="container">
-      <div class="footer__wrapper">
-        <div class="footer__content">
-          <div class="logo">
+      <div :class="styles.wrapper">
+        <div :class="styles.content">
+          <div :class="styles.logo">
             <NuxtLink to="/">
               <NuxtImg v-if="data.logo?.length" :src="`unsplash${data.logo[0]?.path}`" :alt="data.logo[0]?.title"
                 width="400" />
             </NuxtLink>
           </div>
 
-          <nav class="nav">
-            <ul class="nav__list">
-              <li v-for="(link, index) in navigationLinks" :key="index" class="nav__item">
+          <nav :class="styles.nav">
+            <ul :class="styles.navList">
+              <li v-for="(link, index) in navigationLinks" :key="index" :class="styles.navItem">
                 <NuxtLink :to="`/${link.slug}`">{{ link.name }}</NuxtLink>
               </li>
             </ul>
           </nav>
         </div>
 
-        <div class="footer__copy">&#169; Copyright 2025. Sitename</div>
+        <div :class="styles.copy">&#169; Copyright 2025. Sitename</div>
       </div>
     </div>
   </footer>
 </template>
 
-<style lang="scss" scoped>
-.footer {
-  &__wrapper {
-    display: flex;
+<style lang="scss" scoped module>
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  padding: 3rem 0 1rem;
+
+  @include media(mobile) {
+    align-items: flex-start;
+  }
+}
+
+.content {
+  display: flex;
+  align-items: center;
+  gap: 5rem;
+
+  @include media(mobile) {
     flex-direction: column;
-    gap: 2rem;
-    padding: 3rem 0 1rem;
+    align-items: flex-start;
   }
+}
 
-  &__content {
-    display: flex;
-    align-items: center;
-    gap: 5rem;
-  }
-
-  &__copy {
-    text-align: center;
-  }
+.copy {
+  width: 100%;
+  text-align: center;
+  opacity: 0.5;
 }
 
 .logo {
   height: 5rem;
+
+  @include media(mobile) {
+    display: none;
+  }
 
   a {
     width: 100%;
@@ -76,22 +92,38 @@ const navigationLinks = computed(() =>
   }
 }
 
-.nav {
-  &__list {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    list-style: none;
-  }
+.navList {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
 
-  &__item {
-    a {
-      display: block;
-      font-size: 1rem;
-      font-weight: 500;
-      white-space: nowrap;
-      position: relative;
-      transition: color 0.3s;
+  @include media(mobile) {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.675rem;
+  }
+}
+
+.navItem {
+  a {
+    display: block;
+    font-size: 1rem;
+    font-weight: 500;
+    white-space: nowrap;
+    position: relative;
+    transition: color 0.3s;
+    color: var(--color-white);
+
+    @include media(mobile) {
+      white-space: wrap;
+      line-height: 120%;
+    }
+
+    &:hover {
+      color: var(--color-01);
     }
   }
 }
