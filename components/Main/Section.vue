@@ -80,6 +80,10 @@ onMounted(() => {
 <style lang="scss" scoped module>
 .block {
   margin: 2rem 0;
+
+  @include media(mobile) {
+    margin: 1rem 0;
+  }
 }
 
 .wrapper {
@@ -87,6 +91,10 @@ onMounted(() => {
   flex-wrap: nowrap;
   gap: 2rem;
   width: 100%;
+
+  @include media(mobile) {
+    flex-direction: column;
+  }
 }
 
 .content {
@@ -95,7 +103,6 @@ onMounted(() => {
 
 .img {
   flex: 1;
-  aspect-ratio: 1/1;
   border-radius: 0.625rem;
   overflow: hidden;
 

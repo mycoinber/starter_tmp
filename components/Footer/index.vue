@@ -64,6 +64,7 @@ const navigationLinks = computed(() =>
   @include media(mobile) {
     flex-direction: column;
     align-items: flex-start;
+    gap: 1rem;
   }
 }
 
@@ -74,11 +75,12 @@ const navigationLinks = computed(() =>
 }
 
 .logo {
+  width: 5rem;
+  min-width: 5rem;
   height: 5rem;
-
-  @include media(mobile) {
-    display: none;
-  }
+  min-height: 5rem;
+  border-radius: 0.25rem;
+  overflow: hidden;
 
   a {
     width: 100%;
@@ -94,7 +96,6 @@ const navigationLinks = computed(() =>
 
 .navList {
   display: flex;
-  align-items: center;
   gap: 1rem;
   list-style: none;
   margin: 0;
@@ -112,14 +113,13 @@ const navigationLinks = computed(() =>
     display: block;
     font-size: 1rem;
     font-weight: 500;
-    white-space: nowrap;
-    position: relative;
+    line-height: 120%;
     transition: color 0.3s;
     color: var(--color-white);
+    text-align: center;
 
     @include media(mobile) {
-      white-space: wrap;
-      line-height: 120%;
+      text-align: left;
     }
 
     &:hover {

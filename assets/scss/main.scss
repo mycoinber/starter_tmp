@@ -27,6 +27,10 @@ body {
     }
 }
 
+section:nth-child(1) {
+    padding-top: 7rem;
+}
+
 .row {
     display: flex;
     align-items: center;
@@ -109,6 +113,7 @@ h6 {
 p {
     font-size: 1.125rem;
     margin: 0 0 0.5rem;
+    line-height: 120%;
 }
 
 table {

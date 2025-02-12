@@ -89,6 +89,10 @@ onMounted(() => {
 <style lang="scss" scoped module>
 .block {
   margin: 2rem 0;
+
+  @include media(mobile) {
+    margin: 1rem 0;
+  }
 }
 
 .wrapper {
