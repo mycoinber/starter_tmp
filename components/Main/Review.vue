@@ -13,10 +13,12 @@
 </script>
 
 <template>
-  <div v-if="data?.reviews.length" :class="styles.reviews">
-    <h2 :class="styles.title">Отзывы</h2>
+  <div v-if="data?.reviews?.data.length" :class="styles.reviews">
+    <h2 :class="styles.title" v-if="data.reviews?.headline">
+      {{ data.reviews?.headline }}
+    </h2>
     <div
-      v-for="(review, index) in data?.reviews"
+      v-for="(review, index) in data?.reviews?.data"
       :key="index"
       :class="styles.review"
       itemscope

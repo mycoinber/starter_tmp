@@ -32,6 +32,7 @@
   </div>
   <MainAuthor v-if="data.aiauthor" :data="data" />
   <MainReview v-if="data.reviews" :data="data" />
+  <MainFaq v-if="data.faqs" :data="data" />
 </template>
 
 <style lang="scss"></style>

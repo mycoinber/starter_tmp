@@ -12,16 +12,17 @@
 </script>
 
 <template>
-  <section :id="data.key" :class="styles.block">
+  <section :id="data.faqs?.key" :class="styles.block">
     <div class="container">
+      <h2 v-if="data.faqs?.headline">{{ data.faqs?.headline }}</h2>
       <div
-        v-if="data.type === 'faq'"
+        v-if="data.faqs?.data"
         :class="styles.faqPage"
         itemscope
         itemtype="https://schema.org/FAQPage"
       >
         <div
-          v-for="faq in data.faqs"
+          v-for="faq in data.faqs.data"
           :key="faq.question"
           :class="styles.faqQuestion"
           itemscope
