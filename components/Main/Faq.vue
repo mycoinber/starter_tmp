@@ -31,19 +31,21 @@ const toggleFAQ = (index) => {
         <div v-for="(faq, index) in data.faqs.data" :key="faq.question" :class="styles.item" itemscope
           itemtype="https://schema.org/Question">
 
-          <!-- Заголовок с обработчиком клика -->
-          <h3 :class="styles.question" itemprop="name" @click="toggleFAQ(index)">
-            {{ faq.question }}
+          <h3 :class="[styles.question, { [styles.active]: activeIndex === index }]" itemprop="name"
+            @click="toggleFAQ(index)">
+            <span>{{ faq.question }}</span>
+
+            <span :class="styles.arrow">
+              <Icon name="fluent:chevron-down-16-filled" />
+            </span>
           </h3>
 
-          <!-- Ответ с анимацией -->
           <div :class="[styles.answer, { [styles.active]: activeIndex === index }]" itemscope
             itemtype="https://schema.org/Answer">
             <p :class="styles.text" itemprop="text">
               {{ faq.answer }}
             </p>
           </div>
-
         </div>
       </div>
     </div>
@@ -68,7 +70,16 @@ const toggleFAQ = (index) => {
   border-bottom: 1px solid #ddd;
 }
 
+.arrow {
+  display: inline-block;
+  transition: transform 0.3s;
+  font-size: 1.5rem;
+}
+
 .question {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   cursor: pointer;
   font-size: 1.25rem;
   font-weight: 700;
@@ -76,6 +87,14 @@ const toggleFAQ = (index) => {
 
   &:hover {
     color: var(--color-01);
+  }
+
+  &.active {
+    color: var(--color-01);
+
+    .arrow {
+      transform: rotate(180deg);
+    }
   }
 }
 
