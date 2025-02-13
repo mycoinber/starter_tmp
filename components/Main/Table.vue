@@ -39,28 +39,6 @@ const processHtmlContent = (htmlString) => {
     });
   };
 
-  // Оборачиваем таблицу в дополнительный div
-  const table = doc.querySelector("table");
-  if (table) {
-    if (import.meta.server) {
-      // Серверный рендеринг: оборачиваем таблицу с помощью строковой модификации
-      const wrapperHtml = `<div class="${styles.tableWrapper
-        }">${table.toString()}</div>`;
-      table.replaceWith(parse(wrapperHtml));
-    } else {
-      // Клиентский рендеринг: создаем DOM-элемент
-      const wrapper = document.createElement("div");
-      wrapper.className = styles.tableWrapper;
-      table.parentNode.insertBefore(wrapper, table);
-      wrapper.appendChild(table);
-    }
-  }
-
-  // Добавляем классы к таблице и её элементам
-  addClasses("table", "styledTable");
-  addClasses("th", "tableHeader");
-  addClasses("td", "tableCell");
-
   return import.meta.server ? doc.toString() : doc.body.innerHTML;
 };
 

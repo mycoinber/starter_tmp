@@ -35,25 +35,26 @@ const formattedDate = computed(() => {
   <section :class="styles.author">
     <div class="container">
       <div :class="styles.wrapper">
-
-        <div :class="styles.img">
-          <NuxtImg v-for="(image, imgIndex) in data.aiauthor.images" :key="imgIndex" :src="`unsplash${image?.path}`"
-            :alt="image?.title" width="400" />
-        </div>
-
-        <div :class="styles.content">
-          <div :class="styles.info">
-            <div :class="styles.head">
-              <h3 :class="styles.title">{{ data.aiauthor.name }}</h3>
-
-              <time :datetime="publishedDateISO" :class="styles.date">{{ formattedDate }}</time>
-            </div>
-
-            <span :class="styles.subtitle">Автор</span>
+        <div :class="styles.main">
+          <div :class="styles.img">
+            <NuxtImg v-for="(image, imgIndex) in data.aiauthor.images" :key="imgIndex" :src="`unsplash${image?.path}`"
+              :alt="image?.title" width="400" />
           </div>
 
-          <p :class="styles.text">{{ data.aiauthor.bio }}</p>
+          <div :class="styles.content">
+            <div :class="styles.info">
+              <div :class="styles.head">
+                <h3 :class="styles.title">{{ data.aiauthor.name }}</h3>
+
+                <time :datetime="publishedDateISO" :class="styles.date">{{ formattedDate }}</time>
+              </div>
+
+              <span :class="styles.subtitle">Автор</span>
+            </div>
+          </div>
         </div>
+
+        <p :class="styles.text">{{ data.aiauthor.bio }}</p>
       </div>
     </div>
   </section>
@@ -62,7 +63,8 @@ const formattedDate = computed(() => {
 <style lang="scss" scoped module>
 .wrapper {
   display: flex;
-  gap: 2rem;
+  flex-direction: column;
+  gap: 1rem;
   padding: 1rem;
   border: 0.063rem solid var(--border);
   border-radius: 0.625rem;
@@ -70,7 +72,37 @@ const formattedDate = computed(() => {
 
   @include media(mobile) {
     flex-direction: column;
-    gap: 1rem;
+    gap: 0.5rem;
+  }
+}
+
+.main {
+  display: flex;
+  gap: 1rem;
+  width: 100%;
+
+  @include media(mobile) {
+    gap: 0.5rem;
+  }
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  width: 100%;
+}
+
+.head {
+  display: flex;
+  justify-content: space-between;
+  gap: 2rem;
+  width: 100%;
+
+  @include media(mobile) {
+    flex-direction: column-reverse;
+    justify-content: flex-start;
+    gap: 0;
   }
 }
 
@@ -92,28 +124,10 @@ const formattedDate = computed(() => {
   }
 }
 
-.content {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
-.head {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 2rem;
-
-  @include media(mobile) {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0.5rem;
-  }
-}
-
 .date {
-  opacity: 0.5;
   font-size: 0.875rem;
+  text-align: right;
+  opacity: 0.5;
 }
 
 .info {
@@ -128,6 +142,11 @@ const formattedDate = computed(() => {
 }
 
 .subtitle {
+  font-family: var(--font-02);
+  opacity: 0.5;
+}
+
+.text {
   font-size: 0.875rem;
   opacity: 0.5;
 }

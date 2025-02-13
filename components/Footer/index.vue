@@ -75,8 +75,6 @@ const navigationLinks = computed(() =>
 }
 
 .logo {
-  width: 5rem;
-  min-width: 5rem;
   height: 5rem;
   min-height: 5rem;
   border-radius: 0.25rem;
@@ -109,6 +107,8 @@ const navigationLinks = computed(() =>
 }
 
 .navItem {
+  margin: 0;
+
   a {
     display: block;
     font-size: 1rem;
