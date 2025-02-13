@@ -130,12 +130,7 @@ p {
 table {
     width: 100%;
     border-collapse: collapse;
-    margin: 1.25rem 0;
-
-    @include media(mobile) {
-        min-width: 100%;
-        width: fit-content;
-    }
+    margin: 0.5rem 0;
 
     th,
     td {
