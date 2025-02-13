@@ -1,6 +1,7 @@
 <template>
   <main>
-    <Main :data="data" />
+    <Main v-if="data?.type && data?.type === 'blog'" :data="data" />
+    <Policy v-if="data?.type && data?.type === 'tech'" :data="data" />
   </main>
 </template>
 
@@ -17,6 +18,7 @@
     : config.public.siteId;
   const route = useRoute();
   const slug = route.params.slug;
+
   const fetchPage = async (siteId, slug = null) => {
     const params = { siteId };
 
@@ -24,11 +26,9 @@
     if (slug) {
       params.slug = slug;
     }
-    console.log(params);
     const response = await $axios.get("/pages/page-by-slug", {
       params,
     });
-
     return response.data;
   };
 
