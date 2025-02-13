@@ -1,6 +1,7 @@
 <template>
   <main>
-    <Main :data="data" />
+    <Main v-if="data?.type && data?.type === 'blog'" :data="data" />
+    <Policy v-if="data?.type && data?.type === 'tech'" :data="data" />
   </main>
 </template>
 
@@ -10,7 +11,9 @@
 
   const { $axios } = useNuxtApp();
   const config = useRuntimeConfig();
-  const siteId = config.public.siteId;
+  const siteId = import.meta.server
+    ? config.server.siteId
+    : config.public.siteId;
   const route = useRoute();
   const slug = route.params.slug;
   const fetchPage = async (siteId, slug = null) => {
