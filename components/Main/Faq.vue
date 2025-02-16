@@ -81,9 +81,13 @@ const toggleFAQ = (index) => {
   align-items: center;
   justify-content: space-between;
   cursor: pointer;
-  font-size: 1.25rem;
+  font-size: 1.5rem;
   font-weight: 700;
   transition: color 0.3s ease;
+
+  @include media(mobile) {
+    font-size: 1.25rem;
+  }
 
   &:hover {
     color: var(--color-01);
@@ -108,6 +112,10 @@ const toggleFAQ = (index) => {
     max-height: 10rem;
     opacity: 1;
     padding: 1rem 0;
+
+    @include media(mobile) {
+      padding: 0.5rem 0;
+    }
   }
 }
 </style>
