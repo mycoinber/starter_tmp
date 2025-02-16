@@ -22,25 +22,22 @@ function toggle() {
             <nav :class="styles.wrapper">
                 <div :class="styles.head" @click="toggle">
                     <span :class="styles.title">Table of Contents</span>
-
-                    <span :class="styles.arrow">
+                    <span :class="[styles.arrow, { [styles.active]: isOpen }]">
                         <Icon name="fluent:chevron-down-16-filled" />
                     </span>
                 </div>
 
-                <transition name="dropdown">
-                    <ul v-show="isOpen" :class="styles.list" itemscope itemtype="https://schema.org/ItemList">
+                <div :class="[styles.listWrapper, { [styles.active]: isOpen }]">
+                    <ul :class="styles.list" itemscope itemtype="https://schema.org/ItemList">
                         <li v-for="(item, index) in data.sections" :key="item.key" :class="styles.item"
                             itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
-
                             <a :href="'#' + item.key" itemprop="url" :class="styles.link">
                                 <meta itemprop="position" :content="index + 1" />
-
                                 <span itemprop="name" :class="styles.text">{{ item.headline }}</span>
                             </a>
                         </li>
                     </ul>
-                </transition>
+                </div>
             </nav>
         </div>
     </section>
@@ -60,7 +57,6 @@ function toggle() {
     padding: 1rem;
     border: 0.063rem solid var(--border);
     border-radius: 0.625rem;
-    counter-reset: toc-counter;
     background: var(--background-02);
 }
 
@@ -76,14 +72,32 @@ function toggle() {
     font-size: 1.5rem;
     font-family: var(--font-02);
     text-transform: uppercase;
-    margin: 0;
-    padding: 0;
+
+    @include media(mobile) {
+        font-size: 1.25rem;
+    }
 }
 
 .arrow {
     display: inline-block;
     transition: transform 0.3s;
     font-size: 1.5rem;
+}
+
+.arrow.active {
+    transform: rotate(180deg);
+}
+
+.listWrapper {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease, opacity 0.3s ease;
+    opacity: 0;
+}
+
+.listWrapper.active {
+    max-height: 15rem;
+    opacity: 1;
 }
 
 .list {
@@ -95,12 +109,18 @@ function toggle() {
     margin: 0;
 }
 
+.item {
+    margin: 0;
+}
+
 .link {
     color: var(--color-white);
     position: relative;
     padding-left: 2rem;
-    transition: color 0.3s;
+    transition: all 0.3s;
     counter-increment: toc-counter;
+    opacity: 0.5;
+    font-size: 0.875rem;
 
     &::before {
         content: counter(toc-counter) ". ";
@@ -112,6 +132,7 @@ function toggle() {
 
     &:hover {
         color: var(--color-01);
+        opacity: 1;
     }
 }
 </style>

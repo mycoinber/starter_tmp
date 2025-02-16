@@ -64,16 +64,10 @@ const formattedDate = computed(() => {
 .wrapper {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
   padding: 1rem;
   border: 0.063rem solid var(--border);
   border-radius: 0.625rem;
   background: var(--background-02);
-
-  @include media(mobile) {
-    flex-direction: column;
-    gap: 0.5rem;
-  }
 }
 
 .main {

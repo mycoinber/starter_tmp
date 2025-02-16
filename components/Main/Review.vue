@@ -69,7 +69,7 @@ const props = defineProps({
 .wrapper {
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  gap: 1rem;
   overflow: hidden;
 
   @include media(mobile) {
