@@ -159,7 +159,11 @@ ol {
 }
 
 li {
+    font-size: 1rem;
     margin: 0.5rem 0;
+    @include media(mobile) {
+        font-size: 0.875rem;
+    }
     &::marker {
         color: var(--color-01);
     }

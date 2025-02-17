@@ -53,6 +53,7 @@ const navigationLinks = computed(() =>
 
   @include media(mobile) {
     align-items: flex-start;
+    padding: 1rem 0;
   }
 }
 
@@ -72,6 +73,11 @@ const navigationLinks = computed(() =>
   width: 100%;
   text-align: center;
   opacity: 0.5;
+  font-size: 1rem;
+
+  @include media(mobile) {
+    font-size: 0.875rem;
+  }
 }
 
 .logo {
@@ -79,6 +85,11 @@ const navigationLinks = computed(() =>
   min-height: 5rem;
   border-radius: 0.25rem;
   overflow: hidden;
+
+  @include media(mobile) {
+    height: 3.5rem;
+    min-height: 3.5rem;
+  }
 
   a {
     width: 100%;
@@ -120,6 +131,7 @@ const navigationLinks = computed(() =>
 
     @include media(mobile) {
       text-align: left;
+      font-size: 0.875rem;
     }
 
     &:hover {

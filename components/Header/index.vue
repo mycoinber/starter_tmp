@@ -74,6 +74,11 @@ const navigationLinks = computed(() =>
   border-radius: 0.25rem;
   overflow: hidden;
 
+  @include media(mobile) {
+    height: 3.5rem;
+    min-height: 3.5rem;
+  }
+
   a {
     width: 100%;
     height: 100%;
