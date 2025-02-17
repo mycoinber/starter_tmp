@@ -1,7 +1,7 @@
 <template>
   <main>
     <Main v-if="data?.type && data?.type === 'blog'" :data="data" />
-    <Policy v-if="data?.type && data?.type === 'tech'" :data="data" />
+    <Policy v-else :data="data" />
   </main>
 </template>
 

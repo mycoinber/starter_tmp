@@ -7,7 +7,6 @@ export default defineNuxtConfig({
   ssr: true,
   css: ["~/assets/scss/main.scss"],
   modules: [
-    "@nuxt/content",
     "@nuxt/image-edge",
     "@nuxt/icon",
     "@pinia/nuxt",

@@ -2,6 +2,7 @@ import axios from "axios";
 import Cookies from "js-cookie";
 
 export default defineNuxtPlugin((nuxtApp) => {
+  console.log("teest");
   const config = useRuntimeConfig();
 
   // Убедитесь, что backurl правильно настроен
