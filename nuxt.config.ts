@@ -9,7 +9,6 @@ export default defineNuxtConfig({
   modules: [
     "@nuxt/image-edge",
     "@nuxt/icon",
-    "@pinia/nuxt",
     "@nuxtjs/google-fonts",
     "@nuxt/image",
     "nuxt-schema-org",
