@@ -2,6 +2,8 @@
   import { useCssModule } from "vue";
   import { useQuery } from "@tanstack/vue-query";
 
+  const config = useRuntimeConfig();
+
   const props = defineProps({
     data: {
       type: Object,
@@ -9,7 +11,9 @@
     },
   });
 
-  console.log(props.data);
+  const backHost = import.meta.server
+    ? config.server.backHost
+    : config.public.backHost;
 
   const styles = useCssModule();
   const { $axios } = useNuxtApp();
@@ -65,7 +69,7 @@
 
           <div :class="styles.contentMain">
             <div :class="styles.contentImg">
-              <NuxtImg :src="`unsplash${offer.mainImage[0].path}`" />
+              <img :src="backHost + offer.mainImage[0].path" provider="none" />
             </div>
 
             <GeneralButtonThree
@@ -189,7 +193,7 @@
       </div>
 
       <div :class="styles.img">
-        <NuxtImg :src="`unsplash${offer.background[0].path}`" />
+        <img :src="backHost + offer.background[0].path" />
       </div>
     </div>
   </section>

@@ -15,19 +15,14 @@
     ? config.server.siteId
     : config.public.siteId;
   const route = useRoute();
-  console.log(siteId);
+
   const slug = route.params.slug;
   const fetchPage = async (siteId, slug = null) => {
     const params = { siteId };
-
-    // Добавляем slug только если он передан
     if (slug) {
       params.slug = slug;
     }
-
-    console.log("Запрос к API:", params);
     const response = await $axios.get("/pages/page-by-slug", { params });
-    console.log("Ответ API:", response.data);
     return response.data;
   };
 
@@ -43,18 +38,21 @@
 
   watchEffect(() => {
     if (data.value) {
+      console.log("data.value", data.value);
       const pageHead = data.value.head;
       const og = pageHead?.open_graph || {};
       const twitter = pageHead?.twitter_card || {};
       const essential = pageHead?.essential_links || {};
 
       useHead({
+        htmlAttrs: {
+          lang: og.locale || "",
+        },
         title: pageHead.title || "",
         meta: [
           // Основные мета-теги
           { name: "description", content: pageHead.meta_description },
           { name: "keywords", content: pageHead.keywords },
-          { name: "robots", content: pageHead.robots },
           { name: "viewport", content: pageHead.viewport },
           // Задаём charset (обычно в виде <meta charset="UTF-8">)
           { charset: pageHead.charset },
@@ -80,6 +78,71 @@
         ],
         script: [{ src: essential.script, defer: true }],
       });
+
+      useSchemaOrg([
+        defineWebPage({
+          name: data.value.aiauthor.name || "",
+          description: data.value.aiauthor.bio || "",
+        }),
+        defineArticle({
+          headline: data.value.title || "",
+          datePublished: data.value.createdDate || "",
+          dateModified: data.value.updateDate || "",
+          author: {
+            name: data.value.aiauthor.name || "",
+            // url: "https://example.com/author",
+          },
+          inLanguage: og.locale || "",
+          image: "https://example.com/cover.jpg",
+          // articleBody: "Основной контент статьи...",
+        }),
+        ...(data.value.faqs?.data?.length > 0
+          ? [
+              {
+                "@type": "FAQPage",
+                mainEntity: data.value.faqs.data.map((faq) => ({
+                  "@type": "Question",
+                  name: faq.question,
+                  acceptedAnswer: {
+                    "@type": "Answer",
+                    text: faq.answer,
+                  },
+                })),
+              },
+            ]
+          : []),
+        ...(data.value.reviews?.data?.length > 0
+          ? [
+              {
+                "@type": "Review",
+                reviewAspect: "Sweet Bonanza",
+                reviewBody: data.value.reviews.data.map((review) => ({
+                  "@type": "Review",
+                  reviewBody: review.review,
+                  datePublished: review.date,
+                  reviewRating: {
+                    "@type": "Rating",
+                    ratingValue: review.rating,
+                    bestRating: "5",
+                  },
+                  author: {
+                    "@type": "Person",
+                    name: review.name,
+                  },
+                  ...(review.images?.length > 0
+                    ? {
+                        image: review.images.map((image) => ({
+                          "@type": "ImageObject",
+                          url: image.path,
+                          caption: image.alt,
+                        })),
+                      }
+                    : {}),
+                })),
+              },
+            ]
+          : []),
+      ]);
     }
   });
 </script>

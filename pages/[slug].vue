@@ -50,6 +50,9 @@
       const essential = pageHead.essential_links || {};
 
       useHead({
+        htmlAttrs: {
+          lang: og.locale || "",
+        },
         title: pageHead.title || "",
         meta: [
           // Основные мета-теги

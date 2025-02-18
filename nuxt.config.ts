@@ -13,7 +13,17 @@ export default defineNuxtConfig({
     "@nuxt/image",
     "nuxt-schema-org",
     "nuxt-og-image",
+    "@nuxtjs/robots",
+    "@nuxtjs/sitemap",
   ],
+  schemaOrg: {
+    defaults: false,
+  },
+  site: { indexable: false },
+  sitemap: {
+    // exclude all app sources
+    excludeAppSources: true,
+  },
   app: {
     head: (() => {
       // Проверяем, находимся ли мы на клиенте
@@ -48,6 +58,7 @@ export default defineNuxtConfig({
   nitro: {
     node: true,
     prerender: {
+      crawlLinks: true,
       ignore: ["/yandex-browser-manifest.json"],
     },
   },

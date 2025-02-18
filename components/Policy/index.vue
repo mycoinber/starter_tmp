@@ -31,7 +31,7 @@
     <PolicyLoader />
   </div>
 
-  <PolicyHero v-if="isLoaded" />
+  <PolicyHero v-if="isLoaded" :data="data" />
 
   <PolicyTitle v-if="data.h1" :data="data" />
 
