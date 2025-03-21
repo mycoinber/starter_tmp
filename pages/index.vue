@@ -22,8 +22,17 @@
     if (slug) {
       params.slug = slug;
     }
-    const response = await $axios.get("/pages/page-by-slug", { params });
-    return response.data;
+    console.log("Отправляем запрос:", { url: "/pages/page-by-slug", params });
+    try {
+      const response = await $axios.get("/pages/page-by-slug", { params });
+      console.log("Ответ от сервера:", response.data);
+      return response.data;
+    } catch (error) {
+      console.error("Ошибка запроса:", error.message);
+      console.error("Код состояния:", error.response?.status);
+      console.error("Детали ошибки:", error.response?.data);
+      throw error; // Передаем ошибку дальше для vue-query
+    }
   };
 
   const { data, isLoading, suspense } = useQuery({

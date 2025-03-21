@@ -13,17 +13,19 @@
 </script>
 
 <template>
-  <section :class="styles.block" v-if="data?.reviews?.data.length">
+  <section :class="styles.block" :id="data._id" v-if="data?.reviews?.length">
     <div class="container">
       <div :class="styles.wrapper">
-        <h2 :class="styles.title" v-if="data.reviews?.headline">
-          {{ data.reviews?.headline }}
-        </h2>
+        <div
+          v-if="data.content"
+          v-html="data.content"
+          :class="styles.content"
+        ></div>
 
         <div :class="styles.list">
           <div
             :class="styles.item"
-            v-for="(review, index) in data?.reviews?.data"
+            v-for="(review, index) in data?.reviews"
             :key="index"
             itemscope
             itemtype="http://schema.org/Review"
@@ -65,7 +67,7 @@
             </div>
 
             <p :class="styles.text" itemprop="reviewBody">
-              {{ review.review }}
+              {{ review.comment }}
             </p>
           </div>
         </div>

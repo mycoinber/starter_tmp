@@ -69,7 +69,10 @@
 
           <div :class="styles.contentMain">
             <div :class="styles.contentImg">
-              <img :src="backHost + offer.mainImage[0].path" provider="none" />
+              <img
+                :src="backHost + data.article.introImage[0].path"
+                provider="none"
+              />
             </div>
 
             <GeneralButtonThree
@@ -193,7 +196,7 @@
       </div>
 
       <div :class="styles.img">
-        <img :src="backHost + offer.background[0].path" />
+        <img :src="backHost + data.article.introImage[0].path" />
       </div>
     </div>
   </section>

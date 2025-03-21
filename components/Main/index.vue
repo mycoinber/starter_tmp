@@ -1,20 +1,45 @@
 <script setup>
-  import MainSection from "@/components/Main/Section.vue";
-  import MainTable from "@/components/Main/Table.vue";
   import { useCssModule } from "vue";
 
   const styles = useCssModule();
-
-  const componentMap = {
-    table: MainTable,
-    section: MainSection,
-  };
 
   const props = defineProps({
     data: {
       type: Object,
       default: () => ({}),
     },
+  });
+
+  const faqs = computed(() => {
+    return (
+      props.data.article.blocks?.find(
+        (item) => item.faqs && Array.isArray(item.faqs) && item.faqs.length > 0
+      ) || null
+    );
+  });
+
+  // Возвращаем первый блок с непустым reviews
+  const reviews = computed(() => {
+    return (
+      props.data.article.blocks?.find(
+        (item) =>
+          item.reviews && Array.isArray(item.reviews) && item.reviews.length > 0
+      ) || null
+    );
+  });
+
+  const sections = computed(() => {
+    return (
+      props.data.article.blocks?.filter(
+        (item) =>
+          !(
+            (item.faqs && Array.isArray(item.faqs) && item.faqs.length > 0) ||
+            (item.reviews &&
+              Array.isArray(item.reviews) &&
+              item.reviews.length > 0)
+          )
+      ) || []
+    );
   });
 
   const isLoaded = ref(false);
@@ -33,26 +58,20 @@
 
   <MainHero v-if="isLoaded" :data="data" />
 
-  <MainTitle v-if="data.h1" :data="data" />
+  <MainTitle v-if="data.H1" :data="data" />
 
   <MainTableOfContent
     v-if="data.sections && data.sections.length"
     :data="data"
   />
 
-  <component
-    v-if="data.sections"
-    v-for="(item, index) in data.sections"
-    :is="componentMap[item.type] || MainSection"
-    :key="index"
-    :data="item"
-  />
+  <MainSection v-for="(item, index) in sections" :data="item" />
 
-  <MainFaq v-if="data.faqs" :data="data" />
+  <MainFaq v-if="faqs" :data="faqs" />
 
   <MainAuthor v-if="data.aiauthor" :data="data" />
 
-  <MainReview v-if="data.reviews" :data="data" />
+  <MainReview v-if="reviews" :data="reviews" />
 </template>
 
 <style scoped module>
