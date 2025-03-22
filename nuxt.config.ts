@@ -99,7 +99,12 @@ export default defineNuxtConfig({
   image: {
     provider: "ipx",
     dir: "public",
-    domains: ["localhost:3077"],
+    domains: [
+      "localhost:3077",
+      process.env.BACK_HOST
+        ? new URL(process.env.BACK_HOST).hostname
+        : "localhost:3077", // Динамически добавляем hostname из BACK_HOST
+    ],
     alias: {
       unsplash: process.env.BACK_HOST || "http://localhost:3077",
     },
