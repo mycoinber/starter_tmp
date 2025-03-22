@@ -101,7 +101,7 @@ export default defineNuxtConfig({
     dir: "public",
     domains: ["localhost:3077"],
     alias: {
-      unsplash: "http://localhost:3077",
+      unsplash: process.env.BACK_HOST || "http://localhost:3077",
     },
   },
   googleFonts: {
