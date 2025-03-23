@@ -7,7 +7,6 @@
 
 <script setup>
   import { useNuxtApp } from "#app";
-  import { useQuery } from "@tanstack/vue-query";
 
   const { $axios } = useNuxtApp();
   const config = useRuntimeConfig();
@@ -17,11 +16,11 @@
   const route = useRoute();
 
   const slug = route.params.slug;
+
+  // Функция для получения данных страницы
   const fetchPage = async (siteId, slug = null) => {
     const params = { siteId };
-    if (slug) {
-      params.slug = slug;
-    }
+    if (slug) params.slug = slug;
     console.log("Отправляем запрос:", { url: "/pages/page-by-slug", params });
     try {
       const response = await $axios.get("/pages/page-by-slug", { params });
@@ -31,127 +30,183 @@
       console.error("Ошибка запроса:", error.message);
       console.error("Код состояния:", error.response?.status);
       console.error("Детали ошибки:", error.response?.data);
-      throw error; // Передаем ошибку дальше для vue-query
+      throw error;
     }
   };
 
-  const { data, isLoading, suspense } = useQuery({
-    queryKey: computed(() => ["page", [slug, siteId]]),
-    queryFn: () => fetchPage(siteId, slug),
-    suspense: true,
-  });
+  // Получаем данные страницы
+  const { data } = await useAsyncData(
+    `page-${slug}-${siteId}`,
+    () => fetchPage(siteId, slug),
+    {
+      server: true,
+    }
+  );
 
-  onServerPrefetch(async () => {
-    await suspense();
-  });
+  // Парсим глобальные заголовки из runtimeConfig
+  const globalHeadRaw = import.meta.server
+    ? config.server.globalHead
+    : config.public.globalHead;
+  const globalHead = {
+    link: globalHeadRaw
+      .filter((tag) => tag.startsWith("<link"))
+      .map((tag) => {
+        const attributes = Array.from(tag.matchAll(/(\w+)=["'](.*?)["']/g));
+        return Object.fromEntries(
+          attributes.map(([_, name, value]) => [name, value])
+        );
+      }),
+    meta: globalHeadRaw
+      .filter((tag) => tag.startsWith("<meta"))
+      .map((tag) => {
+        const attributes = Array.from(tag.matchAll(/(\w+)=["'](.*?)["']/g));
+        return Object.fromEntries(
+          attributes.map(([_, name, value]) => [name, value])
+        );
+      }),
+  };
 
-  watchEffect(() => {
-    if (data.value) {
-      console.log("data.value", data.value);
-      const pageHead = data.value.head;
-      const og = pageHead?.open_graph || {};
-      const twitter = pageHead?.twitter_card || {};
-      const essential = pageHead?.essential_links || {};
+  // Применяем заголовки
+  if (data.value) {
+    const pageHead = data.value.head || {};
+    const domain = data.value.domain || "https://example.com";
 
-      useHead({
-        htmlAttrs: {
-          lang: og.locale || "",
+    // Локальные заголовки (рендерятся первыми)
+    useHead({
+      htmlAttrs: {
+        lang: data.value.lang || "tr",
+      },
+      title:
+        pageHead.title || "Sweet Bonanza Oyunu Oyna | Büyük Kazançları Yakala!",
+      meta: [
+        { name: "description", content: pageHead.description },
+        { name: "keywords", content: pageHead.keywords },
+        { name: "robots", content: pageHead.robots || "index, follow" },
+        { property: "og:title", content: pageHead.title },
+        { property: "og:description", content: pageHead.description },
+        {
+          property: "og:image",
+          content: data.value.article?.introImage?.[0]?.path,
         },
-        title: pageHead.title || "",
-        meta: [
-          // Основные мета-теги
-          { name: "description", content: pageHead.meta_description },
-          { name: "keywords", content: pageHead.keywords },
-          { name: "viewport", content: pageHead.viewport },
-          // Задаём charset (обычно в виде <meta charset="UTF-8">)
-          { charset: pageHead.charset },
+        {
+          property: "og:url",
+          content: `${domain}/${data.value.slug}`,
+        },
+        { property: "og:type", content: "article" },
+        { property: "og:locale", content: "tr_TR" },
+        { name: "twitter:card", content: "summary_large_image" },
+        { name: "twitter:title", content: pageHead.title },
+        { name: "twitter:description", content: pageHead.description },
+        {
+          name: "twitter:image",
+          content: data.value.article?.introImage?.[0]?.path,
+        },
+      ],
+      link: [{ rel: "canonical", href: `${domain}/${data.value.slug}` }],
+    });
 
-          // Canonical – обычно оформляется через link, но можно добавить и meta для совместимости
-          // Open Graph
-          { property: "og:title", content: og.title },
-          { property: "og:description", content: og.description },
-          { property: "og:image", content: og.image },
-          { property: "og:url", content: og.url },
-          { property: "og:type", content: og.type },
-          { property: "og:locale", content: og.locale },
-          // Twitter Card
-          { name: "twitter:card", content: twitter.card },
-          { name: "twitter:title", content: twitter.title },
-          { name: "twitter:description", content: twitter.description },
-          { name: "twitter:image", content: twitter.image },
-        ],
-        link: [
-          { rel: "canonical", href: pageHead.canonical },
-          { rel: "icon", href: essential.favicon },
-          { rel: "stylesheet", href: essential.stylesheet },
-        ],
-        script: [{ src: essential.script, defer: true }],
-      });
+    // Глобальные заголовки из site.json (рендерятся после локальных)
+    useHead({
+      meta: globalHead.meta,
+      link: globalHead.link,
+    });
 
-      useSchemaOrg([
-        defineWebPage({
-          name: data.value.aiauthor.name || "",
-          description: data.value.aiauthor.bio || "",
-        }),
-        defineArticle({
-          headline: data.value.title || "",
-          datePublished: data.value.createdDate || "",
-          dateModified: data.value.updateDate || "",
-          author: {
-            name: data.value.aiauthor.name || "",
-            // url: "https://example.com/author",
-          },
-          inLanguage: og.locale || "",
-          image: "https://example.com/cover.jpg",
-          // articleBody: "Основной контент статьи...",
-        }),
-        ...(data.value.faqs?.data?.length > 0
-          ? [
-              {
+    // Настройка useSchemaOrg
+    if (data.value.ldJson && Array.isArray(data.value.ldJson)) {
+      console.log("Применяем ldJson через useSchemaOrg:", data.value.ldJson);
+      useSchemaOrg(
+        data.value.ldJson.map((item) => {
+          switch (item["@type"]) {
+            case "Article":
+              return defineArticle({
+                headline: item.headline,
+                description: item.description,
+                datePublished: item.datePublished || data.value.createdAt,
+                dateModified: item.dateModified || data.value.updatedAt,
+                author: {
+                  "@type": "Person",
+                  name:
+                    item.author?.name ||
+                    data.value.aiauthor?.name ||
+                    "Example Author",
+                },
+                publisher: {
+                  "@type": "Organization",
+                  name: item.publisher?.name || "Example Site",
+                  logo: item.publisher?.logo || {
+                    "@type": "ImageObject",
+                    url: "https://example.com/logo.png",
+                  },
+                },
+                mainEntityOfPage: {
+                  "@type": "WebPage",
+                  "@id":
+                    item.mainEntityOfPage?.["@id"] ||
+                    `${domain}/${data.value.slug}`,
+                },
+                wordCount: item.wordCount || data.value.article?.word_count,
+                inLanguage: item.inLanguage || "tr",
+                image: data.value.article?.introImage?.[0]?.path || item.image,
+              });
+
+            case "BreadcrumbList":
+              return defineBreadcrumb({
+                itemListElement: item.itemListElement.map(
+                  (breadcrumb, index) => ({
+                    "@type": "ListItem",
+                    position: breadcrumb.position || index + 1,
+                    name: breadcrumb.name,
+                    item: breadcrumb.item,
+                  })
+                ),
+              });
+
+            case "FAQPage":
+              return {
                 "@type": "FAQPage",
-                mainEntity: data.value.faqs.data.map((faq) => ({
+                mainEntity: item.mainEntity.map((faq) => ({
                   "@type": "Question",
-                  name: faq.question,
+                  name: faq.name,
                   acceptedAnswer: {
                     "@type": "Answer",
-                    text: faq.answer,
+                    text: faq.acceptedAnswer.text,
                   },
                 })),
-              },
-            ]
-          : []),
-        ...(data.value.reviews?.data?.length > 0
-          ? [
-              {
+              };
+
+            case "Review":
+              return {
                 "@type": "Review",
-                reviewAspect: "Sweet Bonanza",
-                reviewBody: data.value.reviews.data.map((review) => ({
-                  "@type": "Review",
-                  reviewBody: review.review,
-                  datePublished: review.date,
-                  reviewRating: {
-                    "@type": "Rating",
-                    ratingValue: review.rating,
-                    bestRating: "5",
-                  },
-                  author: {
-                    "@type": "Person",
-                    name: review.name,
-                  },
-                  ...(review.images?.length > 0
-                    ? {
-                        image: review.images.map((image) => ({
-                          "@type": "ImageObject",
-                          url: image.path,
-                          caption: image.alt,
-                        })),
-                      }
-                    : {}),
-                })),
-              },
-            ]
-          : []),
+                itemReviewed: {
+                  "@type": "CreativeWork",
+                  name: item.itemReviewed?.name || "Sweet Bonanza Oyunu Oyna",
+                },
+                reviewRating: {
+                  "@type": "Rating",
+                  ratingValue: item.reviewRating?.ratingValue || 5,
+                  bestRating: item.reviewRating?.bestRating || 5,
+                },
+                author: {
+                  "@type": "Person",
+                  name: item.author?.name,
+                },
+                reviewBody: item.reviewBody,
+                datePublished: item.datePublished || data.value.createdAt,
+              };
+
+            default:
+              return item;
+          }
+        })
+      );
+    } else {
+      console.warn("ldJson отсутствует или не массив:", data.value?.ldJson);
+      useSchemaOrg([
+        defineWebPage({
+          name: pageHead.title || "Sweet Bonanza Oyunu Oyna",
+          url: `${domain}/${data.value.slug}`,
+        }),
       ]);
     }
-  });
+  }
 </script>

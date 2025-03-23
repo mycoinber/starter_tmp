@@ -45,192 +45,153 @@
 </script>
 
 <template>
-  <section v-if="offer" :class="styles.block">
-    <div class="container">
-      <div :class="styles.wrapper">
-        <div :class="styles.content">
-          <div :class="styles.contentHead">
-            <span :class="styles.title">{{ offer.label }}</span>
+  <div v-if="offer" :class="styles.wrapper">
+    <div :class="styles.content">
+      <div :class="styles.contentHead">
+        <span :class="styles.title">{{ offer.label }}</span>
 
-            <div :class="styles.contentBlock">
-              <span :class="styles.span">{{ offer.title }}</span>
+        <div :class="styles.contentBlock">
+          <span :class="styles.span">{{ offer.title }}</span>
 
-              <GeneralButton
-                :data="{
-                  link: offer.link || '',
-                  title: offer.button1 || 'Играть на деньги',
-                  target: '_blank',
-                  rel: 'noopener noreferrer',
-                }"
-                :class="styles.contentButton"
-              />
-            </div>
-          </div>
-
-          <div :class="styles.contentMain">
-            <div :class="styles.contentImg">
-              <img
-                :src="backHost + data.article.introImage[0].path"
-                provider="none"
-              />
-            </div>
-
-            <GeneralButtonThree
-              :data="{
-                link: offer.link || '',
-                title: offer.button2 || 'Играть',
-                target: '_blank',
-                rel: 'noopener noreferrer',
-              }"
-              style="width: 25%"
-            />
-          </div>
-        </div>
-
-        <div :class="styles.offers">
-          <div :class="styles.offer">
-            <div :class="styles.offerImg">
-              <NuxtImg src="/bg.png" />
-            </div>
-
-            <span :class="styles.offerTitle"
-              >Приветственный Бонус +120% от 1000$</span
-            >
-
-            <div :class="styles.offerContent">
-              <span :class="styles.offerBonus"
-                >Приветственный Бонус +120% от 1000 USDT</span
-              >
-
-              <GeneralButton
-                :data="{
-                  link: '/go',
-                  title: 'Бонус',
-                  target: '_blank',
-                  rel: 'noopener noreferrer',
-                }"
-                style="width: 100%"
-              />
-
-              <div :class="styles.offerDesc">
-                <span :class="styles.offerSpan">18+</span>
-
-                <span :class="styles.offerSpan">Terms Apply</span>
-
-                <span :class="styles.offerSpan">Play Responsibility</span>
-              </div>
-            </div>
-          </div>
-
-          <div :class="styles.offer">
-            <div :class="styles.offerImg">
-              <NuxtImg src="/bg.png" />
-            </div>
-
-            <span :class="styles.offerTitle"
-              >Приветственный Бонус +120% от 1000$</span
-            >
-
-            <div :class="styles.offerContent">
-              <span :class="styles.offerBonus"
-                >Приветственный Бонус +120% от 1000 USDT</span
-              >
-
-              <GeneralButton
-                :data="{
-                  link: '/go',
-                  title: 'Бонус',
-                  target: '_blank',
-                  rel: 'noopener noreferrer',
-                }"
-                style="width: 100%"
-              />
-
-              <div :class="styles.offerDesc">
-                <span :class="styles.offerSpan">18+</span>
-
-                <span :class="styles.offerSpan">Terms Apply</span>
-
-                <span :class="styles.offerSpan">Play Responsibility</span>
-              </div>
-            </div>
-          </div>
-
-          <div :class="styles.offer">
-            <div :class="styles.offerImg">
-              <NuxtImg
-                src="/bg.png"
-                alt="Приветственный Бонус +120% от 1000$"
-              />
-            </div>
-
-            <span :class="styles.offerTitle"
-              >Приветственный Бонус +120% от 1000$</span
-            >
-
-            <div :class="styles.offerContent">
-              <span :class="styles.offerBonus"
-                >Приветственный Бонус +120% от 1000 USDT</span
-              >
-
-              <GeneralButton
-                :data="{
-                  link: '/go',
-                  title: 'Бонус',
-                  target: '_blank',
-                  rel: 'noopener noreferrer',
-                }"
-                style="width: 100%"
-              />
-
-              <div :class="styles.offerDesc">
-                <span :class="styles.offerSpan">18+</span>
-
-                <span :class="styles.offerSpan">Terms Apply</span>
-
-                <span :class="styles.offerSpan">Play Responsibility</span>
-              </div>
-            </div>
-          </div>
+          <GeneralButton
+            :data="{
+              link: offer.link || '',
+              title: offer.button1 || 'Играть на деньги',
+              target: '_blank',
+              rel: 'noopener noreferrer',
+            }"
+            :class="styles.contentButton"
+          />
         </div>
       </div>
 
-      <div :class="styles.img">
-        <img :src="backHost + data.article.introImage[0].path" />
+      <div :class="styles.contentMain">
+        <div :class="styles.contentImg">
+          <img
+            :src="backHost + data.article.introImage[0].path"
+            provider="none"
+          />
+        </div>
+
+        <GeneralButtonThree
+          :data="{
+            link: offer.link || '',
+            title: offer.button2 || 'Играть',
+            target: '_blank',
+            rel: 'noopener noreferrer',
+          }"
+          style="width: 25%"
+        />
       </div>
     </div>
-  </section>
+
+    <div :class="styles.offers">
+      <div :class="styles.offer">
+        <div :class="styles.offerImg">
+          <NuxtImg src="/bg.png" />
+        </div>
+
+        <span :class="styles.offerTitle"
+          >Приветственный Бонус +120% от 1000$</span
+        >
+
+        <div :class="styles.offerContent">
+          <span :class="styles.offerBonus"
+            >Приветственный Бонус +120% от 1000 USDT</span
+          >
+
+          <GeneralButton
+            :data="{
+              link: '/go',
+              title: 'Бонус',
+              target: '_blank',
+              rel: 'noopener noreferrer',
+            }"
+            style="width: 100%"
+          />
+
+          <div :class="styles.offerDesc">
+            <span :class="styles.offerSpan">18+</span>
+
+            <span :class="styles.offerSpan">Terms Apply</span>
+
+            <span :class="styles.offerSpan">Play Responsibility</span>
+          </div>
+        </div>
+      </div>
+
+      <div :class="styles.offer">
+        <div :class="styles.offerImg">
+          <NuxtImg src="/bg.png" />
+        </div>
+
+        <span :class="styles.offerTitle"
+          >Приветственный Бонус +120% от 1000$</span
+        >
+
+        <div :class="styles.offerContent">
+          <span :class="styles.offerBonus"
+            >Приветственный Бонус +120% от 1000 USDT</span
+          >
+
+          <GeneralButton
+            :data="{
+              link: '/go',
+              title: 'Бонус',
+              target: '_blank',
+              rel: 'noopener noreferrer',
+            }"
+            style="width: 100%"
+          />
+
+          <div :class="styles.offerDesc">
+            <span :class="styles.offerSpan">18+</span>
+
+            <span :class="styles.offerSpan">Terms Apply</span>
+
+            <span :class="styles.offerSpan">Play Responsibility</span>
+          </div>
+        </div>
+      </div>
+
+      <div :class="styles.offer">
+        <div :class="styles.offerImg">
+          <NuxtImg src="/bg.png" alt="Приветственный Бонус +120% от 1000$" />
+        </div>
+
+        <span :class="styles.offerTitle"
+          >Приветственный Бонус +120% от 1000$</span
+        >
+
+        <div :class="styles.offerContent">
+          <span :class="styles.offerBonus"
+            >Приветственный Бонус +120% от 1000 USDT</span
+          >
+
+          <GeneralButton
+            :data="{
+              link: '/go',
+              title: 'Бонус',
+              target: '_blank',
+              rel: 'noopener noreferrer',
+            }"
+            style="width: 100%"
+          />
+
+          <div :class="styles.offerDesc">
+            <span :class="styles.offerSpan">18+</span>
+
+            <span :class="styles.offerSpan">Terms Apply</span>
+
+            <span :class="styles.offerSpan">Play Responsibility</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <style lang="scss" scoped module>
-  .block {
-    width: 100%;
-    height: 65rem;
-    position: relative;
-    z-index: 2;
-    margin-bottom: 4rem;
-
-    @include media(mobile) {
-      height: fit-content;
-    }
-
-    &::after {
-      content: "";
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      height: 70%;
-      z-index: -1;
-      background: linear-gradient(
-        to bottom,
-        rgba(255, 255, 255, 0),
-        var(--background-01)
-      );
-      pointer-events: none;
-    }
-  }
-
   .wrapper {
     display: grid;
     grid-template-columns: 75% 25%;

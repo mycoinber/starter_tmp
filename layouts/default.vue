@@ -15,7 +15,6 @@
     try {
       console.log("Запрос данных для siteId:", siteId); // Логирование запроса
       const response = await $axios.get(`/pages/nav?siteId=${siteId}`);
-      console.log("Ответ от API:", response.data); // Логирование ответа
       return response.data;
     } catch (error) {
       console.error("Ошибка при запросе данных:", error);

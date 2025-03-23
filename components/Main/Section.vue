@@ -50,7 +50,6 @@
 
   // Клиентская гидратация
   onMounted(() => {
-    console.log(props.data.content);
     contentHtml.value =
       ssrContext?.modifiedHtml || processHtmlContent(props.data.content);
   });
@@ -67,6 +66,9 @@
             :src="`unsplash${data.imageUrl[0]?.path}`"
             :alt="data.imageUrl[0]?.title"
             width="400"
+            loading="lazy"
+            quality="5"
+            sizes="xs:100vw sm:100vw md:50vw lg:50vw xl:33vw"
           />
         </div>
       </div>

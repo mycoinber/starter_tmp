@@ -1,4 +1,3 @@
-// https://nuxt.com/docs/api/configuration/nuxt-config
 import { readFileSync } from "fs";
 import { resolve } from "path";
 
@@ -15,45 +14,34 @@ export default defineNuxtConfig({
     "nuxt-og-image",
     "@nuxtjs/robots",
     "@nuxtjs/sitemap",
+    "nuxt-vitalizer",
   ],
   schemaOrg: {
     defaults: false,
   },
   site: { indexable: false },
   sitemap: {
-    // exclude all app sources
     excludeAppSources: true,
   },
+  vitalizer: {
+    delayHydration: {
+      hydrateOnEvents: [
+        "mousemove",
+        "scroll",
+        "keydown",
+        "click",
+        "touchstart",
+        "wheel",
+      ],
+      idleCallbackTimeout: 10000,
+      postIdleTimeout: 4000,
+    },
+  },
   app: {
-    head: (() => {
-      // Проверяем, находимся ли мы на клиенте
-
-      const rawContent = JSON.parse(
-        readFileSync(resolve("site.json"), "utf-8")
-      );
-
-      // Преобразуем строки с тегами в массивы объектов для head
-      return {
-        link: rawContent
-          .filter((tag: string) => tag.startsWith("<link"))
-          .map((tag: string) => {
-            // Используем регулярные выражения для парсинга атрибутов
-            const attributes = Array.from(tag.matchAll(/(\w+)=["'](.*?)["']/g));
-            return Object.fromEntries(
-              attributes.map(([_, name, value]) => [name, value])
-            );
-          }),
-        meta: rawContent
-          .filter((tag: string) => tag.startsWith("<meta"))
-          .map((tag: string) => {
-            // Используем регулярные выражения для парсинга атрибутов
-            const attributes = Array.from(tag.matchAll(/(\w+)=["'](.*?)["']/g));
-            return Object.fromEntries(
-              attributes.map(([_, name, value]) => [name, value])
-            );
-          }),
-      };
-    })(),
+    head: {
+      charset: "utf-8",
+      viewport: "width=device-width, initial-scale=1",
+    },
   },
   nitro: {
     node: true,
@@ -84,15 +72,20 @@ export default defineNuxtConfig({
       },
     },
   },
-
   runtimeConfig: {
     public: {
       siteId: process.env.SITE_ID,
       backHost: process.env.BACK_HOST,
+      globalHead: JSON.parse(
+        readFileSync(resolve("site.json"), "utf-8")
+      ) as any, // Приведение к any
     },
     server: {
       siteId: process.env.SITE_ID,
       backHost: process.env.BACK_HOST_SV,
+      globalHead: JSON.parse(
+        readFileSync(resolve("site.json"), "utf-8")
+      ) as any, // Приведение к any
     },
   },
   plugins: ["~/plugins/vue-query.ts"],
@@ -103,10 +96,17 @@ export default defineNuxtConfig({
       "localhost:3077",
       process.env.BACK_HOST
         ? new URL(process.env.BACK_HOST).hostname
-        : "localhost:3077", // Динамически добавляем hostname из BACK_HOST
+        : "localhost:3077",
     ],
     alias: {
       unsplash: process.env.BACK_HOST || "http://localhost:3077",
+    },
+    screens: {
+      xs: 320,
+      sm: 640,
+      md: 768,
+      lg: 1024,
+      xl: 1280,
     },
   },
   googleFonts: {
