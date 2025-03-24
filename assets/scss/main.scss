@@ -4,6 +4,7 @@
 
 html {
     font-size: 0.833vw;
+    scroll-behavior: smooth;
 
     @include media(mobile) {
         font-size: 4.103vw;

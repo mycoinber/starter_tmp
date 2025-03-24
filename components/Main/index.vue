@@ -110,6 +110,7 @@ if (import.meta.server) {
   margin-bottom: 4rem;
 
   @include media(mobile) {
+    min-height: 120vh;
     height: fit-content;
   }
 
