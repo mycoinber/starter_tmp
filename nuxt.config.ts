@@ -21,7 +21,12 @@ export default defineNuxtConfig({
   },
   site: { indexable: false },
   sitemap: {
+    xsl: false,
+    cacheMaxAgeSeconds: 0,
     excludeAppSources: true,
+    sources: [
+      `https://api.pbnmaster.online/sites/sitemap?siteId=${process.env.SITE_ID}`,
+    ],
   },
   vitalizer: {
     delayHydration: {

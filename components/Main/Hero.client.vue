@@ -35,13 +35,9 @@
     queryFn: fetchOffer,
   });
 
-  watch(
-    offer,
-    (newData) => {
-      console.log("Fetched offers:", newData);
-    },
-    { immediate: true }
-  );
+  watch(offer, (newData) => {
+    console.log("Fetched offers:", newData);
+  });
 </script>
 
 <template>
@@ -67,10 +63,7 @@
 
       <div :class="styles.contentMain">
         <div :class="styles.contentImg">
-          <img
-            :src="backHost + data.article.introImage[0].path"
-            provider="none"
-          />
+          <img :src="backHost + data.hero[0]?.path" provider="none" />
         </div>
 
         <GeneralButtonThree

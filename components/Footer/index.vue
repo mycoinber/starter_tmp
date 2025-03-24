@@ -9,12 +9,29 @@
     },
   });
 
-  const navigationLinks = computed(() =>
-    props.data?.pages.map((page, index) => ({
-      name: index === 0 ? "Home" : page.head.title,
-      slug: index === 0 ? "" : page.slug,
-    }))
-  );
+  console.log(props.data);
+
+  const navigationLinks = computed(() => {
+    return props.data?.pages
+      .map((page) => {
+        // Обрабатываем title: берем первую часть при наличии -, –, : или |
+        let title = page.head.title;
+        if (title.match(/[-–:|]/)) {
+          title = title.split(/[-–:|]/)[0].trim();
+        }
+
+        return {
+          name: page.homePage ? "Home" : title,
+          slug: page.homePage ? "" : page.slug,
+        };
+      })
+      .sort((a, b) => {
+        // "Home" всегда первый
+        if (a.name === "Home") return -1;
+        if (b.name === "Home") return 1;
+        return 0;
+      });
+  });
 </script>
 
 <template>
@@ -44,7 +61,9 @@
                 :key="index"
                 :class="styles.navItem"
               >
-                <NuxtLink :to="`/${link.slug}`">{{ link.name }}</NuxtLink>
+                <NuxtLink :to="`/${link.slug}`" external>{{
+                  link.name
+                }}</NuxtLink>
               </li>
             </ul>
           </nav>

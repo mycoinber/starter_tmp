@@ -42,6 +42,7 @@
     );
   });
 
+  console.log("sections", sections);
   const isLoaded = ref(false);
   const isBot = useState("isBot", () => false);
 
@@ -68,11 +69,11 @@
       </DelayHydration>
       <div :class="styles.img">
         <NuxtImg
-          :src="`unsplash${data.article.introImage[0]?.path}`"
-          :alt="data.article.introImage[0]?.title"
-          width="400"
+          :src="`unsplash${data.hero[0]?.path}`"
+          :alt="data.hero[0]?.title"
+          width="800"
           loading="lazy"
-          quality="5"
+          quality="75"
           sizes="xs:100vw sm:100vw md:50vw lg:50vw xl:33vw"
         />
       </div>
@@ -87,9 +88,7 @@
 
   <MainSection v-for="(item, index) in sections" :data="item" />
 
-  <DelayHydration>
-    <MainFaq v-if="faqs" :data="faqs" />
-  </DelayHydration>
+  <MainFaq v-if="faqs" :data="faqs" />
 
   <MainAuthor v-if="data.aiauthor" :data="data" />
 

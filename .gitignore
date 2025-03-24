@@ -23,6 +23,7 @@ logs
 .env.*
 !.env.example
 pnpm-lock.yaml
+package-lock.json
 
 /public/*
 site.json
