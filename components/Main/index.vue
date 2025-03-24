@@ -81,10 +81,7 @@
   </section>
   <MainTitle v-if="data.H1" :data="data" />
 
-  <MainTableOfContent
-    v-if="data.sections && data.sections.length"
-    :data="data"
-  />
+  <MainTableOfContent v-if="data && data.article.blocks.length" :data="data" />
 
   <MainSection v-for="(item, index) in sections" :data="item" />
 

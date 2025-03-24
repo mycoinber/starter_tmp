@@ -58,7 +58,7 @@ export default defineNuxtConfig({
   vite: {
     css: {
       modules: {
-        generateScopedName: `[local]-${process.env.SlUG}_[hash:base64:5]`,
+        generateScopedName: `[local]-${process.env.SLUG}_[hash:base64:5]`,
       },
       preprocessorOptions: {
         scss: {
