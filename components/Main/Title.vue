@@ -14,8 +14,8 @@
   <section :class="styles.block">
     <div class="container">
       <div :class="styles.wrapper">
-        <h1 :class="styles.title">{{ data.H1 }}</h1>
-        <div :class="styles.intro" v-html="data.intro"></div>
+        <h1 :class="styles.title">{{ data.article.H1 }}</h1>
+        <div :class="styles.intro" v-html="data.article.intro"></div>
       </div>
     </div>
   </section>
