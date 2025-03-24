@@ -79,7 +79,7 @@
       </div>
     </div>
   </section>
-  <MainTitle v-if="data.H1" :data="data" />
+  <MainTitle v-if="data.article.H1" :data="data" />
 
   <MainTableOfContent v-if="data && data.article.blocks.length" :data="data" />
 
