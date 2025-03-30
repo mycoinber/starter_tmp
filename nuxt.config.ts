@@ -51,7 +51,7 @@ export default defineNuxtConfig({
   nitro: {
     node: true,
     prerender: {
-      crawlLinks: true,
+      crawlLinks: false,
       ignore: ["/yandex-browser-manifest.json"],
     },
   },
