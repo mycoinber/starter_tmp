@@ -19,7 +19,8 @@ export default defineNuxtConfig({
   schemaOrg: {
     defaults: false,
   },
-  site: { indexable: false },
+  site: {},
+
   sitemap: {
     xsl: false,
     cacheMaxAgeSeconds: 0,
@@ -51,7 +52,7 @@ export default defineNuxtConfig({
   nitro: {
     node: true,
     prerender: {
-      crawlLinks: true,
+      crawlLinks: false,
       ignore: ["/yandex-browser-manifest.json"],
     },
   },
