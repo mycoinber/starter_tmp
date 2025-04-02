@@ -19,7 +19,8 @@ export default defineNuxtConfig({
   schemaOrg: {
     defaults: false,
   },
-  site: { indexable: false },
+  site: {},
+
   sitemap: {
     xsl: false,
     cacheMaxAgeSeconds: 0,
