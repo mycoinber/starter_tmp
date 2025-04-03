@@ -169,7 +169,6 @@ watch(offer, (newData) => {
   }
 }
 
-
 .content {
   display: flex;
   flex-direction: column;
