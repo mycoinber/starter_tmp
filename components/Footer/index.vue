@@ -1,5 +1,7 @@
 <script setup>
 import { useCssModule } from "vue";
+import { useRequestURL } from "#app";
+
 const styles = useCssModule();
 
 const props = defineProps({
@@ -14,7 +16,6 @@ console.log(props.data);
 const navigationLinks = computed(() => {
   return props.data?.pages
     .map((page) => {
-      // Обрабатываем title: берем первую часть при наличии -, –, : или |
       let title = page.head.title;
       if (title.match(/[-–:|]/)) {
         title = title.split(/[-–:|]/)[0].trim();
@@ -26,12 +27,15 @@ const navigationLinks = computed(() => {
       };
     })
     .sort((a, b) => {
-      // "Home" всегда первый
       if (a.name === "Home") return -1;
       if (b.name === "Home") return 1;
       return 0;
     });
 });
+
+// Получаем домен сайта
+const url = useRequestURL();
+const siteDomain = `${url.protocol}//${url.host}`;
 </script>
 
 <template>
@@ -50,15 +54,15 @@ const navigationLinks = computed(() => {
           <nav :class="styles.nav">
             <ul :class="styles.navList">
               <li v-for="(link, index) in navigationLinks" :key="index" :class="styles.navItem">
-                <NuxtLink :to="`/${link.slug}`" external>{{
-                  link.name
-                  }}</NuxtLink>
+                <NuxtLink :to="`/${link.slug}`" external>{{ link.name }}</NuxtLink>
               </li>
             </ul>
           </nav>
         </div>
 
-        <div :class="styles.copy">&#169; Copyright 2025. Sitename</div>
+        <div :class="styles.copy">
+          &#169; Copyright 2025. {{ siteDomain }}
+        </div>
       </div>
     </div>
   </footer>
