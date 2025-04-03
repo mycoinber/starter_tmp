@@ -80,7 +80,13 @@
       meta: [
         { name: "description", content: pageHead.description },
         { name: "keywords", content: pageHead.keywords },
-        { name: "robots", content: pageHead.robots || "index, follow" },
+        {
+          name: "robots",
+          content:
+            data.value.robots?.metaTags?.[0]?.content ||
+            pageHead.robots ||
+            "index, follow",
+        },
         { property: "og:title", content: pageHead.title },
         { property: "og:description", content: pageHead.description },
         {
