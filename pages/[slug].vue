@@ -6,6 +6,10 @@
 
 <script setup>
   import { useNuxtApp } from "#app";
+  import { useRequestURL } from "#app";
+
+  const url = useRequestURL();
+  const siteDomain = `${url.protocol}//${url.host}`;
 
   const { $axios } = useNuxtApp();
   const config = useRuntimeConfig();
@@ -68,7 +72,7 @@
   // Применяем заголовки
   if (data.value) {
     const pageHead = data.value.head || {};
-    const domain = data.value.domain || "https://example.com";
+    const domain = data.value.domain || siteDomain;
 
     // Локальные заголовки (рендерятся первыми)
     useHead({
