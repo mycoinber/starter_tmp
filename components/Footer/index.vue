@@ -1,7 +1,9 @@
 <script setup>
 import { useCssModule } from "vue";
 import { useRequestURL } from "#app";
+import { useI18n } from 'vue-i18n';
 
+const { t } = useI18n();
 const styles = useCssModule();
 
 const props = defineProps({
@@ -22,13 +24,13 @@ const navigationLinks = computed(() => {
       }
 
       return {
-        name: page.homePage ? "Home" : title,
+        name: page.homePage ? t('home') : title,
         slug: page.homePage ? "" : page.slug,
       };
     })
     .sort((a, b) => {
-      if (a.name === "Home") return -1;
-      if (b.name === "Home") return 1;
+      if (a.name === t('home')) return -1;
+      if (b.name === t('home')) return 1;
       return 0;
     });
 });

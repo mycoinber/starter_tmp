@@ -49,7 +49,7 @@ const formattedDate = computed(() => {
                 <time :datetime="publishedDateISO" :class="styles.date">{{ formattedDate }}</time>
               </div>
 
-              <span :class="styles.subtitle">Автор</span>
+              <span :class="styles.subtitle">{{ $t('author') }}</span>
             </div>
           </div>
         </div>

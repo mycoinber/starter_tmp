@@ -2,6 +2,10 @@
 import { useCssModule } from "vue";
 const styles = useCssModule();
 
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
+
 const props = defineProps({
   data: {
     type: Object,
@@ -11,8 +15,8 @@ const props = defineProps({
 
 const navigationLinks = computed(() =>
   props.data?.pages.map((page, index) => ({
-    name: index === 0 ? "Home" : page.head.title,
-    slug: index === 0 ? "" : page.slug,
+    name: index === 0 ? t('home') : page.head.title,
+    slug: index === 0 ? '' : page.slug,
   }))
 );
 </script>
@@ -33,14 +37,14 @@ const navigationLinks = computed(() =>
           <div :class="styles.buttons">
             <GeneralButton :data="{
               link: '/go',
-              title: 'Логин',
+              title: t('login'),
               target: '_blank',
               rel: 'noopener noreferrer',
             }" />
 
             <GeneralButtonTwo :data="{
               link: '/go',
-              title: 'Регистрация',
+              title: t('registration'),
               target: '_blank',
               rel: 'noopener noreferrer',
             }" />
