@@ -21,7 +21,7 @@ function toggle() {
     <div class="container">
       <nav :class="styles.wrapper">
         <div :class="styles.head" @click="toggle">
-          <span :class="styles.title">Table of Contents</span>
+          <span :class="styles.title">{{ $t('table_of_content') }}</span>
           <span :class="[styles.arrow, { [styles.active]: isOpen }]">
             <Icon name="fluent:chevron-down-16-filled" />
           </span>
