@@ -23,7 +23,6 @@ const fetchOffer = async () => {
   return response.data;
 };
 
-// Использование useQuery для получения данных о предложениях с реактивной зависимостью от searchQuery
 const {
   data: offer,
   isPending,
@@ -51,7 +50,7 @@ watch(offer, (newData) => {
 
           <GeneralButton :data="{
             link: offer.link || '',
-            title: offer.button1 || 'Играть на деньги',
+            title: offer.button1 || t('play'),
             target: '_blank',
             rel: 'noopener noreferrer',
           }" :class="styles.contentButton" />
@@ -65,7 +64,7 @@ watch(offer, (newData) => {
 
         <GeneralButtonThree :data="{
           link: offer.link || '',
-          title: offer.button2 || 'Играть',
+          title: offer.button2 || t('play'),
           target: '_blank',
           rel: 'noopener noreferrer',
         }" style="width: 25%" />
@@ -75,7 +74,7 @@ watch(offer, (newData) => {
     <div :class="styles.offers">
       <div :class="styles.offer">
         <div :class="styles.offerImg">
-          <NuxtImg src="/bg.png" />
+          <NuxtImg src="/bg.png" alt="Приветственный Бонус +120% от 1000$" />
         </div>
 
         <span :class="styles.offerTitle">Приветственный Бонус +120% от 1000$</span>
@@ -85,7 +84,7 @@ watch(offer, (newData) => {
 
           <GeneralButton :data="{
             link: '/go',
-            title: 'Бонус',
+            title: 'bonus',
             target: '_blank',
             rel: 'noopener noreferrer',
           }" style="width: 100%" />
@@ -93,36 +92,9 @@ watch(offer, (newData) => {
           <div :class="styles.offerDesc">
             <span :class="styles.offerSpan">18+</span>
 
-            <span :class="styles.offerSpan">Terms Apply</span>
+            <span :class="styles.offerSpan">{{ $t('terms_apply') }}</span>
 
-            <span :class="styles.offerSpan">Play Responsibility</span>
-          </div>
-        </div>
-      </div>
-
-      <div :class="styles.offer">
-        <div :class="styles.offerImg">
-          <NuxtImg src="/bg.png" />
-        </div>
-
-        <span :class="styles.offerTitle">Приветственный Бонус +120% от 1000$</span>
-
-        <div :class="styles.offerContent">
-          <span :class="styles.offerBonus">Приветственный Бонус +120% от 1000 USDT</span>
-
-          <GeneralButton :data="{
-            link: '/go',
-            title: 'Бонус',
-            target: '_blank',
-            rel: 'noopener noreferrer',
-          }" style="width: 100%" />
-
-          <div :class="styles.offerDesc">
-            <span :class="styles.offerSpan">18+</span>
-
-            <span :class="styles.offerSpan">Terms Apply</span>
-
-            <span :class="styles.offerSpan">Play Responsibility</span>
+            <span :class="styles.offerSpan">{{ $t('play_responsibility') }}</span>
           </div>
         </div>
       </div>
@@ -139,7 +111,7 @@ watch(offer, (newData) => {
 
           <GeneralButton :data="{
             link: '/go',
-            title: 'Бонус',
+            title: t('bonus'),
             target: '_blank',
             rel: 'noopener noreferrer',
           }" style="width: 100%" />
@@ -147,9 +119,36 @@ watch(offer, (newData) => {
           <div :class="styles.offerDesc">
             <span :class="styles.offerSpan">18+</span>
 
-            <span :class="styles.offerSpan">Terms Apply</span>
+            <span :class="styles.offerSpan">{{ $t('terms_apply') }}</span>
 
-            <span :class="styles.offerSpan">Play Responsibility</span>
+            <span :class="styles.offerSpan">{{ $t('play_responsibility') }}</span>
+          </div>
+        </div>
+      </div>
+
+      <div :class="styles.offer">
+        <div :class="styles.offerImg">
+          <NuxtImg src="/bg.png" alt="Приветственный Бонус +120% от 1000$" />
+        </div>
+
+        <span :class="styles.offerTitle">Приветственный Бонус +120% от 1000$</span>
+
+        <div :class="styles.offerContent">
+          <span :class="styles.offerBonus">Приветственный Бонус +120% от 1000 USDT</span>
+
+          <GeneralButton :data="{
+            link: '/go',
+            title: t('bonus'),
+            target: '_blank',
+            rel: 'noopener noreferrer',
+          }" style="width: 100%" />
+
+          <div :class="styles.offerDesc">
+            <span :class="styles.offerSpan">18+</span>
+
+            <span :class="styles.offerSpan">{{ $t('terms_apply') }}</span>
+
+            <span :class="styles.offerSpan">{{ $t('play_responsibility') }}</span>
           </div>
         </div>
       </div>
