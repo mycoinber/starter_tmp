@@ -1,6 +1,8 @@
 <script setup>
 import { useCssModule } from "vue";
 import { useQuery } from "@tanstack/vue-query";
+import { useI18n } from 'vue-i18n';
+const { t } = useI18n();
 
 const config = useRuntimeConfig();
 
