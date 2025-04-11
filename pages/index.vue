@@ -1,6 +1,6 @@
 <template>
   <main>
-    <Main v-if="data?.type" :data="data" />
+    <Main :data="data" />
   </main>
 </template>
 
@@ -24,26 +24,28 @@ const slug = route.params.slug;
 const fetchPage = async (siteId, slug = null) => {
   const params = { siteId };
   if (slug) params.slug = slug;
-  console.log("Отправляем запрос:", { url: "/pages/page-by-slug", params });
   try {
-    const response = await axios.get("/pages/page-by-slug", { params });
-    console.log("Ответ от сервера:", response.data);
-    return response.data;
+    const response = await $fetch("/api/pages/page-by-slug", { params });
+    console.log("Ответ от сервера:", response);
+    return response.data || {}; // Возвращаем пустой объект, если response.data отсутствует
   } catch (error) {
-    console.error("Ошибка запроса:", error.message);
+    console.error("Ошибка запроса:", error);
     console.error("Код состояния:", error.response?.status);
     console.error("Детали ошибки:", error.response?.data);
-    throw error;
+    return {}; // Возвращаем пустой объект в случае ошибки
   }
 };
 
-const { data } = await useAsyncData(
+const { data, status, error, refresh, clear } = await useAsyncData(
   `page-${slug}-${siteId}`,
   () => fetchPage(siteId, slug),
   {
     server: true,
+
   }
 );
+
+console.log("status", status.value);
 
 const globalHeadRaw = import.meta.server
   ? config.server.globalHead
@@ -67,7 +69,7 @@ const globalHead = {
     }),
 };
 
-if (data.value) {
+if (data.value && Object.keys(data.value).length > 0) {
   const pageHead = data.value.head || {};
   const domain = data.value.domain || siteDomain;
 
@@ -115,8 +117,7 @@ if (data.value) {
     link: globalHead.link,
   });
 
-  if (data.value.ldJson && Array.isArray(data.value.ldJson)) {
-    console.log("Применяем ldJson через useSchemaOrg:", data.value.ldJson);
+  if (data.value &&  data.value.ldJson && Array.isArray(data.value.ldJson)) {
     useSchemaOrg(
       data.value.ldJson.map((item) => {
         switch (item["@type"]) {

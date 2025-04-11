@@ -44,7 +44,6 @@ const { data } = await useAsyncData(
 
 const translations = data.value.translations;
 const browserLang = ref(data.value.lang);
-console.log("t:", translations[browserLang.value]);
 
 const fallbackLang = Object.keys(translations)[0] || 'en';
 
