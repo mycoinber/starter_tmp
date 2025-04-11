@@ -7,11 +7,12 @@
 <script setup>
 import { useNuxtApp } from "#app";
 import { useRequestURL } from "#app";
+import axios from "axios";
 
 const url = useRequestURL();
 const siteDomain = `${url.protocol}//${url.host}`;
 
-const { $axios } = useNuxtApp();
+// const { $axios } = useNuxtApp();
 const config = useRuntimeConfig();
 const siteId = import.meta.server
   ? config.server.siteId
@@ -25,7 +26,7 @@ const fetchPage = async (siteId, slug = null) => {
   if (slug) params.slug = slug;
   console.log("Отправляем запрос:", { url: "/pages/page-by-slug", params });
   try {
-    const response = await $axios.get("/pages/page-by-slug", { params });
+    const response = await axios.get("/pages/page-by-slug", { params });
     console.log("Ответ от сервера:", response.data);
     return response.data;
   } catch (error) {
