@@ -7,6 +7,8 @@
 <script setup>
   import { useNuxtApp } from "#app";
   import { useRequestURL } from "#app";
+  import { useI18n } from 'vue-i18n';
+  const { locale } = useI18n();
 
   const url = useRequestURL();
   const siteDomain = `${url.protocol}//${url.host}`;
@@ -72,6 +74,8 @@ const globalHead = {
   if (data.value) {
     const pageHead = data.value.head || {};
     const domain = data.value.domain || siteDomain;
+
+    locale.value = data.value.lang || "en";
 
   // Локальные заголовки (рендерятся первыми)
   useHead({

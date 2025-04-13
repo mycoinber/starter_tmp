@@ -4,7 +4,7 @@
   </NuxtLayout>
 </template>
 
-<script setup>
+<!-- <script setup>
 import { useI18n } from 'vue-i18n';
 const { setLocaleMessage, locale } = useI18n();
 
@@ -44,7 +44,6 @@ const { data } = await useAsyncData(
 
 const translations = data.value.translations;
 const browserLang = ref(data.value.lang);
-console.log("t:", translations[browserLang.value]);
 
 const fallbackLang = Object.keys(translations)[0] || 'en';
 
@@ -54,4 +53,4 @@ const matchedLang = translations[browserLang.value]
 
 setLocaleMessage(matchedLang, translations[matchedLang]);
 locale.value = matchedLang;
-</script>
+</script> -->

@@ -9,11 +9,9 @@ const siteId = import.meta.server
   ? config.server.siteId
   : config.public.siteId;
 const styles = useCssModule();
-console.log(siteId);
 
 const fetchPages = async (siteId) => {
   try {
-    console.log("Запрос данных для siteId:", siteId);
     const response = await $axios.get(`/pages/nav?siteId=${siteId}`);
     return response.data;
   } catch (error) {

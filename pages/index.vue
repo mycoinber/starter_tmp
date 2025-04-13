@@ -1,12 +1,14 @@
 <template>
   <main>
-    <Main v-if="data?.type" :data="data" />
+    <Main :data="data" />
   </main>
 </template>
 
 <script setup>
 import { useNuxtApp } from "#app";
 import { useRequestURL } from "#app";
+import { useI18n } from 'vue-i18n';
+const { locale } = useI18n();
 
 const url = useRequestURL();
 const siteDomain = `${url.protocol}//${url.host}`;
@@ -27,20 +29,23 @@ const fetchPage = async (siteId, slug = null) => {
     const response = await $axios.get("/pages/page-by-slug", { params });
     return response.data;
   } catch (error) {
-    console.error("Ошибка запроса:", error.message);
+    console.error("Ошибка запроса:", error);
     console.error("Код состояния:", error.response?.status);
     console.error("Детали ошибки:", error.response?.data);
-    throw error;
+    return {}; // Возвращаем пустой объект в случае ошибки
   }
 };
 
-const { data } = await useAsyncData(
+const { data, status, error, refresh, clear } = await useAsyncData(
   `page-${slug}-${siteId}`,
   () => fetchPage(siteId, slug),
   {
     server: true,
+
   }
 );
+
+console.log("status", status.value);
 
 const globalHeadRaw = import.meta.server
   ? config.server.globalHead
@@ -64,9 +69,11 @@ const globalHead = {
     }),
 };
 
-if (data.value) {
+if (data.value && Object.keys(data.value).length > 0) {
   const pageHead = data.value.head || {};
   const domain = data.value.domain || siteDomain;
+
+  locale.value = data.value.lang || "en";
 
   useHead({
     htmlAttrs: {
