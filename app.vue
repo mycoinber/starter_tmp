@@ -4,7 +4,7 @@
   </NuxtLayout>
 </template>
 
-<script setup>
+<!-- <script setup>
 import { useI18n } from 'vue-i18n';
 const { setLocaleMessage, locale } = useI18n();
 
@@ -53,4 +53,4 @@ const matchedLang = translations[browserLang.value]
 
 setLocaleMessage(matchedLang, translations[matchedLang]);
 locale.value = matchedLang;
-</script>
+</script> -->

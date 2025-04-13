@@ -7,12 +7,13 @@
 <script setup>
 import { useNuxtApp } from "#app";
 import { useRequestURL } from "#app";
-import axios from "axios";
+import { useI18n } from 'vue-i18n';
+const { locale } = useI18n();
 
 const url = useRequestURL();
 const siteDomain = `${url.protocol}//${url.host}`;
 
-// const { $axios } = useNuxtApp();
+const { $axios } = useNuxtApp();
 const config = useRuntimeConfig();
 const siteId = import.meta.server
   ? config.server.siteId
@@ -25,9 +26,8 @@ const fetchPage = async (siteId, slug = null) => {
   const params = { siteId };
   if (slug) params.slug = slug;
   try {
-    const response = await $fetch("/api/pages/page-by-slug", { params });
-    console.log("Ответ от сервера:", response);
-    return response.data || {}; // Возвращаем пустой объект, если response.data отсутствует
+    const response = await $axios.get("/pages/page-by-slug", { params });
+    return response.data;
   } catch (error) {
     console.error("Ошибка запроса:", error);
     console.error("Код состояния:", error.response?.status);
@@ -73,6 +73,8 @@ if (data.value && Object.keys(data.value).length > 0) {
   const pageHead = data.value.head || {};
   const domain = data.value.domain || siteDomain;
 
+  locale.value = data.value.lang || "en";
+
   useHead({
     htmlAttrs: {
       lang: data.value.lang || "en",
@@ -117,7 +119,7 @@ if (data.value && Object.keys(data.value).length > 0) {
     link: globalHead.link,
   });
 
-  if (data.value &&  data.value.ldJson && Array.isArray(data.value.ldJson)) {
+  if (data.value.ldJson && Array.isArray(data.value.ldJson)) {
     useSchemaOrg(
       data.value.ldJson.map((item) => {
         switch (item["@type"]) {

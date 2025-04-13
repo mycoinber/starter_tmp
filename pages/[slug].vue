@@ -7,6 +7,8 @@
 <script setup>
   import { useNuxtApp } from "#app";
   import { useRequestURL } from "#app";
+  import { useI18n } from 'vue-i18n';
+  const { locale } = useI18n();
 
   const url = useRequestURL();
   const siteDomain = `${url.protocol}//${url.host}`;
@@ -24,10 +26,9 @@ const slug = route.params.slug;
 const fetchPage = async (siteId, slug = null) => {
   const params = { siteId };
   if (slug) params.slug = slug;
-  console.log("Отправляем запрос:", { url: "/pages/page-by-slug", params });
+
   try {
     const response = await $axios.get("/pages/page-by-slug", { params });
-    console.log("Ответ от сервера:", response.data);
     return response.data;
   } catch (error) {
     console.error("Ошибка запроса:", error.message);
@@ -73,6 +74,8 @@ const globalHead = {
   if (data.value) {
     const pageHead = data.value.head || {};
     const domain = data.value.domain || siteDomain;
+
+    locale.value = data.value.lang || "en";
 
   // Локальные заголовки (рендерятся первыми)
   useHead({
@@ -122,7 +125,7 @@ const globalHead = {
 
   // Настройка useSchemaOrg
   if (data.value.ldJson && Array.isArray(data.value.ldJson)) {
-    console.log("Применяем ldJson через useSchemaOrg:", data.value.ldJson);
+
     useSchemaOrg(
       data.value.ldJson.map((item) => {
         switch (item["@type"]) {

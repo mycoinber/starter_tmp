@@ -39,7 +39,6 @@ const {
 watch(
   offer,
   (newData) => {
-    console.log("Fetched offers:", newData);
   },
   { immediate: true }
 );

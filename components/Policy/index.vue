@@ -42,7 +42,6 @@
     );
   });
 
-  console.log("sections", sections);
   const isLoaded = ref(false);
   const isBot = useState("isBot", () => false);
 

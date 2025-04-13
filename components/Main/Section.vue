@@ -58,7 +58,7 @@
 <template>
   <section :id="data._id" :class="styles.block">
     <div class="container">
-      <div :class="styles.wrapper">
+      <div :class="[styles.wrapper, { [styles.image]: data.imageUrl?.length }]">
         <div v-html="contentHtml" :class="styles.content"></div>
 
         <div v-if="data.imageUrl?.length" :class="styles.img">
@@ -113,5 +113,9 @@
 
   a {
     color: var(--color-01);
+  }
+
+  .image {
+    padding-top: 1rem;
   }
 </style>
