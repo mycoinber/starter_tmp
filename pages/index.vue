@@ -23,10 +23,8 @@ const slug = route.params.slug;
 const fetchPage = async (siteId, slug = null) => {
   const params = { siteId };
   if (slug) params.slug = slug;
-  console.log("Отправляем запрос:", { url: "/pages/page-by-slug", params });
   try {
     const response = await $axios.get("/pages/page-by-slug", { params });
-    console.log("Ответ от сервера:", response.data);
     return response.data;
   } catch (error) {
     console.error("Ошибка запроса:", error.message);
@@ -115,7 +113,6 @@ if (data.value) {
   });
 
   if (data.value.ldJson && Array.isArray(data.value.ldJson)) {
-    console.log("Применяем ldJson через useSchemaOrg:", data.value.ldJson);
     useSchemaOrg(
       data.value.ldJson.map((item) => {
         switch (item["@type"]) {

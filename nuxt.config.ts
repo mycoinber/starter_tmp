@@ -4,6 +4,9 @@ import { resolve } from "path";
 export default defineNuxtConfig({
   devtools: { enabled: false },
   ssr: true,
+  routeRules: {
+    '/**': { isr: 60 },
+  },
   css: ["~/assets/scss/main.scss"],
   modules: [
     "@nuxt/image-edge",
@@ -50,9 +53,10 @@ export default defineNuxtConfig({
     },
   },
   nitro: {
+    logLevel: 'debug',
     node: true,
     prerender: {
-      crawlLinks: false,
+      // crawlLinks: true,
       ignore: ["/yandex-browser-manifest.json"],
     },
   },
@@ -99,7 +103,6 @@ export default defineNuxtConfig({
     provider: "ipx",
     dir: "public",
     domains: [
-      "localhost:3077",
       process.env.BACK_HOST
         ? new URL(process.env.BACK_HOST).hostname
         : "localhost:3077",

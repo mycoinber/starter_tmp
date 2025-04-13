@@ -13,8 +13,6 @@ const props = defineProps({
   },
 });
 
-console.log(props.data);
-
 const navigationLinks = computed(() => {
   return props.data?.pages
     .map((page) => {
