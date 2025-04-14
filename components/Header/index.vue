@@ -14,12 +14,25 @@ const props = defineProps({
   },
 });
 
-const navigationLinks = computed(() =>
-  props.data?.pages.map((page, index) => ({
-    name: index === 0 ? t('home') : page.head.title,
-    slug: index === 0 ? '' : page.slug,
-  }))
-);
+const navigationLinks = computed(() => {
+  return props.data?.pages
+    .map((page) => {
+      let title = page.head.title;
+      if (title.match(/[-–:|]/)) {
+        title = title.split(/[-–:|]/)[0].trim();
+      }
+
+      return {
+        name: page.homePage ? t('home') : title,
+        slug: page.homePage ? "" : page.slug,
+      };
+    })
+    .sort((a, b) => {
+      if (a.name === t('home')) return -1;
+      if (b.name === t('home')) return 1;
+      return 0;
+    });
+});
 
 const isMenuOpen = ref(false);
 
