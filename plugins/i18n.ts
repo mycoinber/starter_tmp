@@ -1,5 +1,7 @@
 import { createI18n } from 'vue-i18n'
-import en from '~/locales/local.json'
+import messages from '~/locales/messages.json'
+
+console.log("messages", messages)
 
 export default defineNuxtPlugin((nuxtApp) => {
   const i18n = createI18n({
@@ -7,7 +9,7 @@ export default defineNuxtPlugin((nuxtApp) => {
     globalInjection: true,
     locale: 'en',
     fallbackLocale: 'en',
-    messages: en
+    messages // Pass the entire messages object with all locales
   })
 
   nuxtApp.vueApp.use(i18n)
