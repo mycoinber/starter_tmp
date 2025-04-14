@@ -1,7 +1,7 @@
 <script setup>
 import { ref, useSSRContext, onMounted, useCssModule } from "vue";
 import { parse } from "node-html-parser";
-// Получаем объект со стилями, определёнными в данном компоненте
+
 const styles = useCssModule();
 
 const props = defineProps({
@@ -14,7 +14,6 @@ const props = defineProps({
 const ssrContext = import.meta.server ? useSSRContext() : null;
 const contentHtml = ref("");
 
-// Универсальная функция парсинга HTML
 const parseHTML = (html) => {
   if (import.meta.server) {
     return parse(html);
@@ -47,14 +46,12 @@ const processHtmlContent = (htmlString) => {
   return import.meta.server ? doc.toString() : doc.body.innerHTML;
 };
 
-// Серверный рендеринг
 if (import.meta.server && props.data.type === "section") {
   const modifiedHtml = processHtmlContent(props.data.content);
   ssrContext.modifiedHtml = modifiedHtml;
   contentHtml.value = modifiedHtml;
 }
 
-// Клиентская гидратация
 onMounted(() => {
   if (props.data.type === "section") {
     contentHtml.value =
