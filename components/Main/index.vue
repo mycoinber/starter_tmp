@@ -20,7 +20,6 @@ const faqs = computed(() => {
   );
 });
 
-// Возвращаем первый блок с непустым reviews
 const reviews = computed(() => {
   return (
     props.data.article.blocks?.find(

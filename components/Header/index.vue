@@ -1,5 +1,6 @@
 <script setup>
 import { useCssModule } from "vue";
+import { ref } from 'vue';
 const styles = useCssModule();
 
 import { useI18n } from 'vue-i18n';
@@ -19,10 +20,16 @@ const navigationLinks = computed(() =>
     slug: index === 0 ? '' : page.slug,
   }))
 );
+
+const isMenuOpen = ref(false);
+
+const toggleMenu = () => {
+  isMenuOpen.value = !isMenuOpen.value;
+};
 </script>
 
 <template>
-  <header :class="styles.header">
+  <header :class="[styles.header, { [styles.active]: isMenuOpen }]">
     <div class="container">
       <div :class="styles.wrapper">
         <div :class="styles.logo">
@@ -50,18 +57,37 @@ const navigationLinks = computed(() =>
             }" />
           </div>
         </ClientOnly>
+
+        <div :class="styles.burger" @click="toggleMenu">
+          <span :class="{ [styles.active]: isMenuOpen }"></span>
+          <span :class="{ [styles.active]: isMenuOpen }"></span>
+          <span :class="{ [styles.active]: isMenuOpen }"></span>
+        </div>
+
+
+        <nav v-if="isMenuOpen" :class="styles.mobileMenu">
+          <ul>
+            <li v-for="(link, i) in navigationLinks" :key="i">
+              <NuxtLink :to="`/${link.slug}`">{{ link.name }}</NuxtLink>
+            </li>
+          </ul>
+        </nav>
       </div>
     </div>
   </header>
 </template>
 
-<style lang="scss" module>
+<style lang="scss" scoped module>
 .header {
   position: absolute;
   top: 0;
   left: 0;
   z-index: 10;
   width: 100%;
+
+  &.active {
+    background-color: var(--background-01);
+  }
 }
 
 .wrapper {
@@ -99,39 +125,116 @@ const navigationLinks = computed(() =>
   }
 }
 
-// .nav {
-//   @include media(mobile) {
-//     display: none;
-//   }
-// }
+.nav {
+  @include media(mobile) {
+    display: none;
+  }
+}
 
-// .navList {
-//   display: flex;
-//   align-items: center;
-//   gap: 2rem;
-//   list-style: none;
-//   margin: 0;
-//   overflow: hidden;
-// }
+.navList {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  list-style: none;
+  margin: 0;
+  overflow: hidden;
+}
 
-// .navItem {
-//   a {
-//     display: block;
-//     font-size: 1rem;
-//     font-weight: 500;
-//     color: var(--color-white);
-//     white-space: nowrap;
-//     transition: color 0.3s;
+.navItem {
+  a {
+    display: block;
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--color-white);
+    white-space: nowrap;
+    transition: color 0.3s;
 
-//     &:hover {
-//       color: var(--color-01);
-//     }
+    &:hover {
+      color: var(--color-01);
+    }
 
-//     &.router-link-active {
-//       color: var(--color-01);
-//     }
-//   }
-// }
+    &.router-link-active {
+      color: var(--color-01);
+    }
+  }
+}
+
+.burger {
+  display: none;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 1.5rem;
+  height: 1.125rem;
+  cursor: pointer;
+
+  span {
+    height: 0.125rem;
+    background: white;
+    transition: 0.3s;
+    border-radius: 0.063rem;
+  }
+
+  @include media(mobile) {
+    display: flex;
+  }
+
+  & span.active:nth-child(1) {
+    transform: rotate(45deg) translateY(0.65rem);
+  }
+
+  & span.active:nth-child(2) {
+    opacity: 0;
+  }
+
+  & span.active:nth-child(3) {
+    transform: rotate(-45deg) translateY(-0.65rem);
+  }
+}
+
+.mobileMenu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background: var(--background-01);
+  padding: 5rem 1rem 1rem;
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+
+  flex-direction: column;
+
+  ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+
+    li {
+      margin-bottom: 1rem;
+
+      a {
+        color: white;
+        font-size: 1rem;
+        font-weight: 500;
+      }
+    }
+  }
+
+  @include media(mobile) {
+    display: flex;
+  }
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.3s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
 
 .buttons {
   display: flex;
