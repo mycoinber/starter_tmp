@@ -121,6 +121,18 @@ if (import.meta.server) {
     }
   }
 
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 20%;
+    z-index: -1;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, rgba(0, 0, 0, 0.68) 50%, rgba(255, 255, 255, 0) 100%);
+    pointer-events: none;
+  }
+
   &::after {
     content: "";
     position: absolute;

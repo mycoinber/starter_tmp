@@ -33,7 +33,6 @@ const navigationLinks = computed(() => {
     });
 });
 
-// Получаем домен сайта
 const url = useRequestURL();
 const siteDomain = `${url.protocol}//${url.host}`;
 </script>

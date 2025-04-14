@@ -40,6 +40,14 @@ const toggleMenu = () => {
           </NuxtLink>
         </div>
 
+        <nav :class="styles.nav">
+          <ul :class="styles.navList">
+            <li v-for="(link, index) in navigationLinks" :key="index" :class="styles.navItem">
+              <NuxtLink :to="`/${link.slug}`" external>{{ link.name }}</NuxtLink>
+            </li>
+          </ul>
+        </nav>
+
         <ClientOnly>
           <div :class="styles.buttons">
             <GeneralButton :data="{
@@ -85,8 +93,10 @@ const toggleMenu = () => {
   z-index: 10;
   width: 100%;
 
-  &.active {
-    background-color: var(--background-01);
+  @include media(mobile) {
+    &.active {
+      background: var(--background-01);
+    }
   }
 }
 
@@ -126,6 +136,8 @@ const toggleMenu = () => {
 }
 
 .nav {
+  max-width: 60%;
+
   @include media(mobile) {
     display: none;
   }
@@ -146,8 +158,8 @@ const toggleMenu = () => {
     font-size: 1rem;
     font-weight: 500;
     color: var(--color-white);
-    white-space: nowrap;
-    transition: color 0.3s;
+    transition: color 0.3s ease-in-out;
+    text-align: center;
 
     &:hover {
       color: var(--color-01);
