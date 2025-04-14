@@ -1,5 +1,4 @@
 <script setup>
-  import { NuxtImg } from "#components";
   import { useCssModule } from "vue";
 
   const styles = useCssModule();
@@ -34,7 +33,7 @@
                   v-for="(image, imgIndex) in review.images"
                   :key="imgIndex"
                   :src="`unsplash${image?.path}`"
-                  :alt="image?.title"
+                  :alt="image?.alt || 'review'"
                   width="400"
                   itemprop="image"
                 />

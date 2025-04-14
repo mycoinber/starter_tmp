@@ -67,7 +67,7 @@ onMounted(() => {
         <div v-if="data.type === 'section'" v-html="contentHtml" :class="styles.content"></div>
 
         <div v-if="data.images?.length" :class="styles.img">
-          <NuxtImg :src="`unsplash${data.images[0]?.path}`" :alt="data.images[0]?.title" width="400" />
+          <NuxtImg :src="`unsplash${data.images[0]?.path}`" :alt="data.images[0]?.alt || 'image'" width="400" />
         </div>
       </div>
     </div>

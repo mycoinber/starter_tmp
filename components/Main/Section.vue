@@ -59,7 +59,7 @@ onMounted(() => {
         <div v-html="contentHtml" :class="styles.content"></div>
 
         <div v-if="data.imageUrl?.length" :class="styles.img">
-          <NuxtImg :src="`unsplash${data.imageUrl[0]?.path}`" :alt="data.imageUrl[0]?.title" width="400" loading="lazy"
+          <NuxtImg :src="`unsplash${data.imageUrl[0]?.path}`" :alt="data.imageUrl[0]?.alt || 'image'" width="400" loading="lazy"
             quality="5" sizes="xs:100vw sm:100vw md:50vw lg:50vw xl:33vw" />
         </div>
       </div>

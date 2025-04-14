@@ -70,7 +70,7 @@ if (import.meta.server) {
       </DelayHydration>
 
       <div :class="styles.img">
-        <NuxtImg :src="`unsplash${data.hero[0]?.path}`" :alt="data.hero[0]?.title" width="800" loading="lazy"
+        <NuxtImg :src="`unsplash${data.hero[0]?.path}`" :alt="data.hero[0]?.alt || 'hero'" width="800" loading="lazy"
           quality="75" sizes="xs:100vw sm:100vw md:50vw lg:50vw xl:33vw" />
       </div>
     </div>

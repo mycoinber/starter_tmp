@@ -40,7 +40,7 @@ const formattedDate = computed(() => {
         <div :class="styles.main">
           <div :class="styles.img">
             <NuxtImg v-for="(image, imgIndex) in data.aiauthor.picture" :key="imgIndex" :src="`unsplash${image?.path}`"
-              :alt="image?.title" width="400" />
+              :alt="image?.alt || 'author'" width="400" />
           </div>
 
           <div :class="styles.content">
