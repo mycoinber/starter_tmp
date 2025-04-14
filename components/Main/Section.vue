@@ -89,6 +89,10 @@ onMounted(() => {
 
 .reverse:nth-child(odd) .wrapper {
   flex-direction: row-reverse;
+
+  @include media(mobile) {
+    flex-direction: column;
+  }
 }
 
 .content {
