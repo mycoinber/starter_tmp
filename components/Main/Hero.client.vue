@@ -60,7 +60,8 @@ watch(offer, (newData) => {
 
       <div :class="styles.contentMain">
         <div :class="styles.contentImg">
-          <img :src="backHost + data.hero[0]?.path" provider="none" />
+          <img v-if="data.offer?.background?.[0]?.path" :src="backHost + data.offer.background[0].path" provider="none" />
+          <img v-else :src="backHost + data.hero[0]?.path" provider="none" />
         </div>
 
         <GeneralButtonThree :data="{
