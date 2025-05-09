@@ -21,7 +21,7 @@ const styles = useCssModule();
 const { $axios } = useNuxtApp();
 
 const fetchOffer = async () => {
-  const response = await $axios.get(`/public/offer/${props.data.offer}`);
+  const response = await $axios.get(`/public/offer/${props.data.offer._id}`);
   return response.data;
 };
 
