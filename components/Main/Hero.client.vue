@@ -2,6 +2,7 @@
 import { useCssModule } from "vue";
 import { useQuery } from "@tanstack/vue-query";
 import { useI18n } from 'vue-i18n';
+import { computed } from 'vue';
 const { t } = useI18n();
 
 const config = useRuntimeConfig();
@@ -19,6 +20,10 @@ const backHost = import.meta.server
 
 const styles = useCssModule();
 const { $axios } = useNuxtApp();
+
+const heroSections = computed(() => {
+  return offer.value?.sections?.filter(section => section.type === 'hero') || [];
+});
 
 const fetchOffer = async () => {
   const response = await $axios.get(`/public/offer/${props.data.offer._id}`);
@@ -74,73 +79,20 @@ watch(offer, (newData) => {
     </div>
 
     <div :class="styles.offers">
-      <div :class="styles.offer">
+      <div v-for="section in heroSections" :key="section._id" :class="styles.offer">
         <div :class="styles.offerImg">
-          <NuxtImg src="/bg.png" alt="Приветственный Бонус +120% от 1000$" />
+          <NuxtImg v-if="section.images?.[0]?.path" :src="backHost + section.images[0].path" :alt="section.headline" />
+          <NuxtImg v-else src="/bg.png" :alt="section.headline" />
         </div>
 
-        <span :class="styles.offerTitle">Приветственный Бонус +120% от 1000$</span>
+        <span :class="styles.offerTitle">{{ section.headline }}</span>
 
         <div :class="styles.offerContent">
-          <span :class="styles.offerBonus">Приветственный Бонус +120% от 1000 USDT</span>
+          <span :class="styles.offerBonus">{{ section.headline }}</span>
 
           <GeneralButton :data="{
-            link: '/go',
-            title: 'bonus',
-            target: '_blank',
-            rel: 'noopener noreferrer',
-          }" style="width: 100%" />
-
-          <div :class="styles.offerDesc">
-            <span :class="styles.offerSpan">18+</span>
-
-            <span :class="styles.offerSpan">{{ $t('terms_apply') }}</span>
-
-            <span :class="styles.offerSpan">{{ $t('play_responsibility') }}</span>
-          </div>
-        </div>
-      </div>
-
-      <div :class="styles.offer">
-        <div :class="styles.offerImg">
-          <NuxtImg src="/bg.png" alt="Приветственный Бонус +120% от 1000$" />
-        </div>
-
-        <span :class="styles.offerTitle">Приветственный Бонус +120% от 1000$</span>
-
-        <div :class="styles.offerContent">
-          <span :class="styles.offerBonus">Приветственный Бонус +120% от 1000 USDT</span>
-
-          <GeneralButton :data="{
-            link: '/go',
-            title: t('bonus'),
-            target: '_blank',
-            rel: 'noopener noreferrer',
-          }" style="width: 100%" />
-
-          <div :class="styles.offerDesc">
-            <span :class="styles.offerSpan">18+</span>
-
-            <span :class="styles.offerSpan">{{ $t('terms_apply') }}</span>
-
-            <span :class="styles.offerSpan">{{ $t('play_responsibility') }}</span>
-          </div>
-        </div>
-      </div>
-
-      <div :class="styles.offer">
-        <div :class="styles.offerImg">
-          <NuxtImg src="/bg.png" alt="Приветственный Бонус +120% от 1000$" />
-        </div>
-
-        <span :class="styles.offerTitle">Приветственный Бонус +120% от 1000$</span>
-
-        <div :class="styles.offerContent">
-          <span :class="styles.offerBonus">Приветственный Бонус +120% от 1000 USDT</span>
-
-          <GeneralButton :data="{
-            link: '/go',
-            title: t('bonus'),
+            link: section.link || '/go',
+            title: section.cta || t('bonus'),
             target: '_blank',
             rel: 'noopener noreferrer',
           }" style="width: 100%" />
