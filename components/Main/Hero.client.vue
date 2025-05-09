@@ -65,7 +65,8 @@ watch(offer, (newData) => {
 
       <div :class="styles.contentMain">
         <div :class="styles.contentImg">
-          <img v-if="data.offer?.background?.[0]?.path" :src="backHost + data.offer.background[0].path" provider="none" />
+          <img v-if="data.offer?.background?.[0]?.path" :src="backHost + data.offer.background[0].path"
+            provider="none" />
           <img v-else :src="backHost + data.hero[0]?.path" provider="none" />
         </div>
 
@@ -288,6 +289,7 @@ watch(offer, (newData) => {
   opacity: 0.5;
   padding-right: 0.5rem;
   border-right: 0.125rem solid var(--border);
+  text-align: center;
 
   &:last-child {
     border-right: none;

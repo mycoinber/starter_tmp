@@ -44,9 +44,8 @@ const siteDomain = `${url.protocol}//${url.host}`;
         <div :class="styles.content">
           <div :class="styles.logo">
             <NuxtLink to="/">
-              <NuxtImg v-if="data.logo?.length" :src="`unsplash${data.logo[0]?.path}`" :alt="data.logo[0]?.alt || 'logo'"
-                width="80" height="80" quality="1" loading="lazy"
-                sizes="xs:200px sm:300px md:400px lg:400px xl:400px" />
+              <NuxtImg v-if="data.logo?.length" :src="`unsplash${data.logo[0]?.path}`"
+                :alt="data.logo[0]?.alt || 'logo'" quality="25" loading="lazy" />
             </NuxtLink>
           </div>
 
@@ -104,18 +103,17 @@ const siteDomain = `${url.protocol}//${url.host}`;
 }
 
 .logo {
-  width: 5rem;
-  min-width: 5rem;
-  height: 5rem;
-  min-height: 5rem;
+  min-width: 3rem;
+  height: 3rem;
+  min-height: 3rem;
   border-radius: 0.25rem;
   overflow: hidden;
 
   @include media(mobile) {
-    width: 3.5rem;
-    min-width: 3.5rem;
-    height: 3.5rem;
-    min-height: 3.5rem;
+    min-width: 2rem;
+    height: 2rem;
+    min-height: 2rem;
+    margin-bottom: 1rem;
   }
 
   a {

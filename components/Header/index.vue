@@ -48,8 +48,7 @@ const toggleMenu = () => {
         <div :class="styles.logo">
           <NuxtLink to="/">
             <NuxtImg v-if="data.logo?.length" :src="`unsplash${data.logo[0]?.path}`" :alt="data.logo[0]?.alt || 'logo'"
-              width="32" height="32" quality="1" sizes="xs:20px sm:30px md:32px lg:32px xl:32px" preload loading="lazy"
-              :placeholder="[32, 32]" />
+              quality="25" preload loading="lazy" :placeholder="[32, 32]" />
           </NuxtLink>
         </div>
 
@@ -122,18 +121,16 @@ const toggleMenu = () => {
 }
 
 .logo {
-  width: 5rem;
-  min-width: 5rem;
-  height: 5rem;
-  min-height: 5rem;
+  min-width: 3rem;
+  height: 3rem;
+  min-height: 3rem;
   border-radius: 0.25rem;
   overflow: hidden;
 
   @include media(mobile) {
-    width: 3.5rem;
-    min-width: 3.5rem;
-    height: 3.5rem;
-    min-height: 3.5rem;
+    min-width: 2rem;
+    height: 2rem;
+    min-height: 2rem;
   }
 
   a {
