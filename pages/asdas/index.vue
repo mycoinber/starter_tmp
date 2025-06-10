@@ -22,6 +22,8 @@ const route = useRoute();
 
 const slug = route.params.slug;
 
+console.log("slug", slug);
+
 const fetchPage = async (siteId, slug = null) => {
   const params = { siteId };
   if (slug) params.slug = slug;
@@ -45,7 +47,7 @@ const { data, status, error, refresh, clear } = await useAsyncData(
   }
 );
 
-console.log("status", status.value);
+console.log("status1");
 
 const globalHeadRaw = import.meta.server
   ? config.server.globalHead
@@ -130,7 +132,7 @@ if (data.value && Object.keys(data.value).length > 0) {
       link: data.value.alters.map(alter => ({
         rel: "alternate",
         hreflang: alter.hreflang,
-        href: `${siteDomain}/${alter.slug}/`
+        href: `${siteDomain}/${alter.slug}`
       }))
     });
   }

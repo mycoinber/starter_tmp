@@ -108,8 +108,27 @@ const globalHead = {
         content: data.value.article?.introImage?.[0]?.path,
       },
     ],
-    link: [{ rel: "canonical", href: `${domain}/${data.value.slug}` }],
+    link: [{ rel: "canonical", href: `${domain}${data.value.homePage ? '' : `/${data.value.slug}`}/` }],
   });
+
+  useHead({
+      link: [{
+        rel: "alternate",
+        hreflang: data.value.lang || "en",
+        href: `${siteDomain}${data.value.homePage ? '' : `/${data.value.slug}`}/`,
+      },
+    ],
+  });
+
+  if (data.value.alters && Array.isArray(data.value.alters)) {
+    useHead({
+      link: data.value.alters.map(alter => ({
+        rel: "alternate",
+        hreflang: alter.hreflang,
+        href: `${siteDomain}/${alter.slug}${data.value.homePage ? '' : `/${data.value.slug}`}/`
+      }))
+    });
+  }
 
   if (data.value.robots?.metaTags) {
     useHead({
