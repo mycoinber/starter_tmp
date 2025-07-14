@@ -9,6 +9,7 @@ import { useNuxtApp, useRequestURL, useRoute, useHead, useRuntimeConfig } from '
 import { useI18n } from 'vue-i18n';
 import { ref, computed } from 'vue';
 
+
 // Initialize core Nuxt utilities
 const { $axios } = useNuxtApp();
 const { locale } = useI18n();
@@ -33,25 +34,21 @@ if (!slug || systemPaths.some((path) => route.path.includes(path))) {
   throw createError({ statusCode: 404, message: 'Page not found' });
 }
 
-// Prepare API request parameters
-const params = { siteId, ...(slug && { slug }) };
 
-// Fetch page data
-const fetchPage = async () => {
-  try {
-    const response = await $axios.get('/pages/page-by-slug', { params });
-    return response.data;
-  } catch (error) {
-    console.error('Error fetching page data:', error.response?.status, error.message);
-    throw createError({
-      statusCode: error.response?.status || 500,
-      message: 'Failed to fetch page data',
-    });
-  }
-};
+console.log('SSR?', import.meta.server);
+const pageKey = computed(() => `page:${siteId}:${slug}`);
+const { data } = await useAsyncData(pageKey.value, () =>
+  $fetch('/api/pages/page-by-slug', {
+    query: { slug, siteId },
+    server: true,
+    lazy: false,
+  })
+);
 
-// Load page data with useAsyncData
-const { data } = await useAsyncData(`page-${slug}-${siteId}`, fetchPage, { server: true });
+
+if (data.value?.redirect?.to && import.meta.server) {
+  await navigateTo(data.value.redirect.to, { redirectCode: data.value.redirect.statusCode || 301 });
+}
 
 // Parse global head tags from runtimeConfig
 const globalHeadRaw = import.meta.server ? config.server.globalHead : config.public.globalHead;
