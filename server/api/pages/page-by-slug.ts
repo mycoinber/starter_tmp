@@ -9,7 +9,11 @@ interface PageResponse {
   [key: string]: any;
 }
 
+export const runtime = 'nodejs';
+
 export default defineEventHandler(async (event) => {
+  setResponseHeader(event, 'Cache-Control', 's-maxage=3600, stale-while-revalidate=600');
+
   const query = getQuery(event);
   const siteId = query.siteId;
   const slug = query.slug;
