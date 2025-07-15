@@ -5,7 +5,7 @@ export default defineNuxtConfig({
   devtools: { enabled: false },
   ssr: true,
   routeRules: {
-    '/**': { isr: 60 },
+    '/**': { isr: 3600 },
   },
   css: ["~/assets/scss/main.scss"],
   modules: [
