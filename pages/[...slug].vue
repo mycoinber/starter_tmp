@@ -16,16 +16,14 @@ const siteId = import.meta.server ? config.server.siteId : config.public.siteId;
 
 // Сборка slug-а из catch-all
 const slug = Array.isArray(route.params.slug)
-  ? route.params.slug.join("/") // можно доработать под твой формат
+  ? route.params.slug.join("/")
   : route.params.slug?.trim() || "";
-
 
 if (isSystemPath(slug)) {
   throw createError({ statusCode: 404, message: "Page not found" });
 }
 
-
-// Получаем данные страницы (можешь вынести в usePageData)
+// Получаем данные страницы
 const { data, status, error } = await usePageData(siteId, slug);
 
 // --- HEAD LOGIC ---
@@ -46,6 +44,7 @@ const globalHead = {
     .map(tag => Object.fromEntries(Array.from(tag.matchAll(/(\w+)=["'](.*?)["']/g)).map(([_, name, value]) => [name, value]))),
 };
 
+// === Универсальный headMeta с поддержкой robots.metaTags ===
 const headMeta = computed(() => {
   const baseMeta = [
     { name: "description", content: pageHead.value.description },
@@ -63,23 +62,35 @@ const headMeta = computed(() => {
   ];
 
   const metaArray = Array.isArray(pageHead.value.meta) ? pageHead.value.meta : [];
-  const metaWithoutRobots = metaArray.filter(m => !(m.key === 'robots' && m.type === 'name'));
-  let robotsMeta = metaArray.find(m => m.key === 'robots' && m.type === 'name');
-  if (!robotsMeta && Array.isArray(data.value?.robots?.metaTags)) {
-    robotsMeta = data.value.robots.metaTags.find(m => m.name === 'robots');
-  }
-
   const globalMeta = globalHead.meta || [];
+  const robotsMetaTags = Array.isArray(data.value?.robots?.metaTags) ? data.value.robots.metaTags : [];
+
+  // Оставляем только один robots (приоритет: page meta > robots.metaTags)
+  let robotsMeta = metaArray.find(m => m.key === "robots" && m.type === "name")
+    || robotsMetaTags.find(m => m.name === "robots");
+
+  const metaWithoutRobots = metaArray.filter(m => m.key !== "robots");
+  const robotsOtherMeta = robotsMetaTags.filter(m => m.name !== "robots");
+  const usedNames = new Set([
+    ...metaWithoutRobots.map(m => m.key),
+    ...(globalMeta.map(m => m.name).filter(Boolean)),
+  ]);
+  const robotsOtherMetaFiltered = robotsOtherMeta.filter(m => !usedNames.has(m.name));
+
   const result = [
     ...baseMeta,
     ...metaWithoutRobots.map(m => ({
-      [m.type === 'property' ? 'property' : m.type === 'httpEquiv' ? 'httpEquiv' : 'name']: m.key,
+      [m.type === "property" ? "property" : m.type === "httpEquiv" ? "httpEquiv" : "name"]: m.key,
       content: m.content
     })),
     ...(robotsMeta ? [{
-      [robotsMeta.type === 'property' ? 'property' : robotsMeta.type === 'httpEquiv' ? 'httpEquiv' : 'name']: robotsMeta.key || robotsMeta.name,
-      content: robotsMeta.content
+      name: "robots",
+      content: robotsMeta.content || robotsMeta.value
     }] : []),
+    ...robotsOtherMetaFiltered.map(m => ({
+      name: m.name,
+      content: m.content
+    })),
     ...globalMeta
   ];
   return result;
@@ -140,7 +151,6 @@ const headNoScripts = computed(() => [
   })) : [])
 ]);
 
-// Один вызов useHead
 useHead({
   htmlAttrs: { lang: pageLang.value },
   title: pageHead.value.title || "Website",
@@ -150,12 +160,11 @@ useHead({
   noscript: headNoScripts.value,
 });
 
-// Применяем локаль
 if (data.value?.lang) {
   locale.value = data.value.lang;
 }
 
-// Редирект если надо
+// SSR редирект
 if (data.value?.redirect?.to && import.meta.server) {
   await navigateTo(data.value.redirect.to, { redirectCode: data.value.redirect.statusCode || 301 });
 }
