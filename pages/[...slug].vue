@@ -15,14 +15,15 @@ const route = useRoute();
 const siteId = import.meta.server ? config.server.siteId : config.public.siteId;
 
 // Сборка slug-а из catch-all
-const slug = Array.isArray(route.params.slug)
-  ? route.params.slug.join("/")
-  : route.params.slug?.trim() || "";
+const rawSlug = route.params.slug;
 
-if (isSystemPath(slug)) {
-  throw createError({ statusCode: 404, message: "Page not found" });
-}
+const slugArray = Array.isArray(rawSlug)
+  ? rawSlug
+  : typeof rawSlug === "string"
+    ? rawSlug.split("/")
+    : [];
 
+const slug = slugArray[slugArray.length - 1] || "";
 // Получаем данные страницы
 const { data, status, error } = await usePageData(siteId, slug);
 

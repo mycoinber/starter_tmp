@@ -9,7 +9,6 @@ export function usePageData(siteId: string, slug: string | null) {
         const params: Record<string, any> = { siteId };
         if (slug) params.slug = slug;
         try {
-            console.log('🔥 params:', slug);
             const response = await $axios.get("/pages/page-by-slug", { params });
             return response.data;
         } catch (error: any) {
