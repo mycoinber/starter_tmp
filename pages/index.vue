@@ -40,7 +40,7 @@ const globalHead = {
     .map(tag => Object.fromEntries(Array.from(tag.matchAll(/(\w+)=["'](.*?)["']/g)).map(([_, name, value]) => [name, value]))),
 };
 
-// 3. Сбор всех meta
+// 3. Сбор всех meta с учетом robots и robots.metaTags
 const headMeta = computed(() => {
   // 1. Базовые meta-теги (description, og, twitter)
   const baseMeta = [
@@ -58,37 +58,51 @@ const headMeta = computed(() => {
     { name: "twitter:image", content: data.value?.article?.introImage?.[0]?.path },
   ];
 
-  // 2. Все meta-теги из массива meta, кроме robots
+  // Page meta (индивидуальные теги)
   const metaArray = Array.isArray(pageHead.value.meta) ? pageHead.value.meta : [];
-  const metaWithoutRobots = metaArray.filter(m => !(m.key === 'robots' && m.type === 'name'));
-
-  // 3. robots meta — приоритет: meta > data.value.robots.metaTags
-  let robotsMeta = metaArray.find(m => m.key === 'robots' && m.type === 'name');
-  if (!robotsMeta && Array.isArray(data.value?.robots?.metaTags)) {
-    // Используем только первый robots, если вдруг их несколько (по спецификации head допускает только один robots)
-    robotsMeta = data.value.robots.metaTags.find(m => m.name === 'robots');
-  }
-
-  // 4. Глобальные meta
+  // Глобальные meta
   const globalMeta = globalHead.meta || [];
+  // robots.metaTags (все из глобального robots-объекта)
+  const robotsMetaTags = Array.isArray(data.value?.robots?.metaTags) ? data.value.robots.metaTags : [];
+
+  // 1. Оставляем только один robots (приоритет: page meta > robots.metaTags)
+  let robotsMeta = metaArray.find(m => m.key === "robots" && m.type === "name")
+    || robotsMetaTags.find(m => m.name === "robots");
+
+  // 2. Остальные robots.metaTags (кроме robots)
+  const robotsOtherMeta = robotsMetaTags.filter(m => m.name !== "robots");
+
+  // 3. Все meta из pageHead, кроме robots
+  const metaWithoutRobots = metaArray.filter(m => m.key !== "robots");
+
+  // 4. Добавляем robotsOtherMeta только если их нет в page meta и global meta
+  // (по name)
+  const usedNames = new Set([
+    ...metaWithoutRobots.map(m => m.key),
+    ...(globalMeta.map(m => m.name).filter(Boolean)),
+  ]);
+  const robotsOtherMetaFiltered = robotsOtherMeta.filter(m => !usedNames.has(m.name));
 
   // Итоговая сборка
   const result = [
     ...baseMeta,
     ...metaWithoutRobots.map(m => ({
-      [m.type === 'property' ? 'property' : m.type === 'httpEquiv' ? 'httpEquiv' : 'name']: m.key,
+      [m.type === "property" ? "property" : m.type === "httpEquiv" ? "httpEquiv" : "name"]: m.key,
       content: m.content
     })),
     ...(robotsMeta ? [{
-      [robotsMeta.type === 'property' ? 'property' : robotsMeta.type === 'httpEquiv' ? 'httpEquiv' : 'name']: robotsMeta.key,
-      content: robotsMeta.content
+      name: "robots",
+      content: robotsMeta.content || robotsMeta.value // под разные форматы
     }] : []),
+    ...robotsOtherMetaFiltered.map(m => ({
+      name: m.name,
+      content: m.content
+    })),
     ...globalMeta
   ];
-  console.log(result);
+
   return result;
 });
-
 
 // 4. Сбор всех link
 const headLinks = computed(() => [

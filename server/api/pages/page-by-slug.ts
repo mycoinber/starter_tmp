@@ -16,7 +16,13 @@ export default defineEventHandler(async (event) => {
 
   const query = getQuery(event);
   const siteId = query.siteId;
-  const slug = query.slug;
+  const slug = query.slug as string;
+
+  console.log('🔥 api slug:', slug);
+
+  // if (!/^[a-z0-9\-_/]+$/i.test(slug)) {
+  //   throw createError({ statusCode: 400, statusMessage: "Invalid slug" });
+  // }
 
   if (!siteId) {
     throw createError({ statusCode: 400, statusMessage: "siteId is required" });
