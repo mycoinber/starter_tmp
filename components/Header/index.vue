@@ -63,16 +63,14 @@ const toggleMenu = () => {
         <ClientOnly>
           <div :class="styles.buttons">
             <GeneralButton :data="{
-              link: '/go',
+              link: '#',
               title: t('login'),
-              target: '_blank',
               rel: 'noopener noreferrer',
             }" />
 
             <GeneralButtonTwo :data="{
-              link: '/go',
+              link: '#',
               title: t('registration'),
-              target: '_blank',
               rel: 'noopener noreferrer',
             }" />
           </div>
