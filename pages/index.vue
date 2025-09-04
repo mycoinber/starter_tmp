@@ -2,6 +2,9 @@
   <main>
     <Main :data="data" />
   </main>
+  <!-- SSR-rendered body code blocks -->
+  <div v-for="(code, i) in bodyHtmlCodes" :key="'bh-'+i" v-html="code" />
+  <component v-for="(code, i) in bodyJsCodes" :key="'bjs-'+i" :is="'script'" type="text/javascript">{{ code }}</component>
 </template>
 
 <script setup>
@@ -165,12 +168,47 @@ const headNoScripts = computed(() => [
 ]);
 
 // 7. Один вызов useHead
+// 9. Custom code blocks from Site
+const headBlocks = computed(() => Array.isArray(data.value?.headCodeBlocks) ? data.value.headCodeBlocks : []);
+const bodyBlocks = computed(() => Array.isArray(data.value?.bodyCodeBlocks) ? data.value.bodyCodeBlocks : []);
+
+const extractCode = (html) => {
+  if (!html) return "";
+  let s = String(html);
+  const match = s.match(/<pre[^>]*><code[^>]*>([\s\S]*?)<\/code><\/pre>/i);
+  if (match) s = match[1];
+  // decode common entities from legacy saved content
+  if (/&lt;|&gt;|&amp;|&quot;|&#039;/.test(s)) {
+    s = s
+      .replace(/&lt;/g, "<")
+      .replace(/&gt;/g, ">")
+      .replace(/&amp;/g, "&")
+      .replace(/&quot;/g, '"')
+      .replace(/&#039;/g, "'");
+  }
+  return s;
+};
+
+const toHeadScripts = computed(() => headBlocks.value
+  .filter(b => b?.type === 'js')
+  .map((b, i) => ({ key: `head-js-${i}` , innerHTML: extractCode(b.content), type: 'text/javascript' }))
+);
+const toHeadStyles = computed(() => headBlocks.value
+  .filter(b => b?.type === 'css')
+  .map((b, i) => ({ key: `head-css-${i}`, children: extractCode(b.content) }))
+);
+const toHeadLdJson = computed(() => headBlocks.value
+  .filter(b => b?.type === 'blocks')
+  .map((b, i) => ({ key: `head-ld-${i}`, type: 'application/ld+json', children: extractCode(b.content) }))
+);
+
 useHead({
   htmlAttrs: { lang: pageLang.value },
   title: pageHead.value.title || "Website",
   meta: headMeta.value,
   link: headLinks.value,
-  script: headScripts.value,
+  script: [...headScripts.value, ...toHeadScripts.value, ...toHeadLdJson.value],
+  style: toHeadStyles.value,
   noscript: headNoScripts.value,
 });
 
@@ -178,4 +216,14 @@ useHead({
 if (data.value?.lang) {
   locale.value = data.value.lang;
 }
+
+// 10. Body SSR helpers
+const bodyHtmlCodes = computed(() => bodyBlocks.value
+  .filter(b => ['html', 'text', 'universal'].includes(b?.type))
+  .map(b => extractCode(b.content))
+);
+const bodyJsCodes = computed(() => bodyBlocks.value
+  .filter(b => b?.type === 'js')
+  .map(b => extractCode(b.content))
+);
 </script>
