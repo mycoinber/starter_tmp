@@ -3,10 +3,9 @@ import { $fetch } from "ofetch";
 
 export default defineEventHandler(async (event) => {
   if (event.path === "/robots.txt") {
-    const runtimeConfig = useRuntimeConfig(); // Получаем runtimeConfig
-
-    const backHost = runtimeConfig.public.backHost || "http://localhost:3077";
-    const siteId = runtimeConfig.public.siteId || "default-id";
+    const runtimeConfig = useRuntimeConfig();
+    const backHost = runtimeConfig.server.backHost || "http://localhost:3077";
+    const siteId = runtimeConfig.server.siteId || runtimeConfig.public.siteId || "default-id";
 
     const host = event.node.req.headers["host"] || "localhost:3000";
     const proto =

@@ -8,12 +8,10 @@ export default defineNuxtPlugin((nuxtApp) => {
   // Убедитесь, что backurl правильно настроен
   const backurl = import.meta.server
     ? config.server.backHost
-    : config.public.backHost;
+    : '/api';
 
   console.log(backurl);
-  const instance = axios.create({
-    baseURL: backurl,
-  });
+  const instance = axios.create({ baseURL: backurl });
 
   instance.interceptors.request.use(
     (config) => {

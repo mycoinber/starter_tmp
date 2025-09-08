@@ -5,8 +5,6 @@ import { useI18n } from 'vue-i18n';
 import { computed } from 'vue';
 const { t } = useI18n();
 
-const config = useRuntimeConfig();
-
 const props = defineProps({
   data: {
     type: Object,
@@ -14,9 +12,7 @@ const props = defineProps({
   },
 });
 
-const backHost = import.meta.server
-  ? config.server.backHost
-  : config.public.backHost;
+// proxy images via same-origin route to hide backend
 
 const styles = useCssModule();
 const { $axios } = useNuxtApp();
@@ -65,9 +61,9 @@ watch(offer, (newData) => {
 
       <div :class="styles.contentMain">
         <div :class="styles.contentImg">
-          <img v-if="data.offer?.background?.[0]?.path" :src="backHost + data.offer.background[0].path"
+          <img v-if="data.offer?.background?.[0]?.path" :src="`/media${data.offer.background[0].path}`"
             provider="none" />
-          <img v-else :src="backHost + data.hero[0]?.path" provider="none" />
+          <img v-else :src="`/media${data.hero[0]?.path}`" provider="none" />
         </div>
 
         <GeneralButtonThree :data="{
@@ -82,7 +78,7 @@ watch(offer, (newData) => {
     <div :class="styles.offers">
       <div v-for="section in heroSections" :key="section._id" :class="styles.offer">
         <div :class="styles.offerImg">
-          <NuxtImg v-if="section.images?.[0]?.path" :src="backHost + section.images[0].path" :alt="section.headline" />
+          <NuxtImg v-if="section.images?.[0]?.path" :src="`/media${section.images[0].path}`" :alt="section.headline" provider="none" />
           <NuxtImg v-else src="/bg.png" :alt="section.headline" />
         </div>
 

@@ -44,8 +44,7 @@ const siteDomain = `${url.protocol}//${url.host}`;
         <div :class="styles.content">
           <div :class="styles.logo">
             <NuxtLink to="/">
-              <NuxtImg v-if="data.logo?.length" :src="`unsplash${data.logo[0]?.path}`"
-                :alt="data.logo[0]?.alt || 'logo'" quality="25" loading="lazy" />
+              <img v-if="data.logo?.length" :src="`/media${data.logo[0]?.path || ''}`" :alt="data.logo[0]?.alt || 'logo'" />
             </NuxtLink>
           </div>
 

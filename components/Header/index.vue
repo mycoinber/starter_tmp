@@ -39,6 +39,7 @@ const isMenuOpen = ref(false);
 const toggleMenu = () => {
   isMenuOpen.value = !isMenuOpen.value;
 };
+
 </script>
 
 <template>
@@ -47,8 +48,7 @@ const toggleMenu = () => {
       <div :class="styles.wrapper">
         <div :class="styles.logo">
           <NuxtLink to="/">
-            <NuxtImg v-if="data.logo?.length" :src="`unsplash${data.logo[0]?.path}`" :alt="data.logo[0]?.alt || 'logo'"
-              quality="25" preload loading="lazy" :placeholder="[32, 32]" />
+            <img v-if="data.logo?.length" :src="`/media${data.logo[0]?.path || ''}`" :alt="data.logo[0]?.alt || 'logo'" />
           </NuxtLink>
         </div>
 

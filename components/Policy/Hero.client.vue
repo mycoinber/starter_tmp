@@ -4,7 +4,6 @@ import { useQuery } from "@tanstack/vue-query";
 import { useI18n } from 'vue-i18n';
 const { t } = useI18n();
 
-const config = useRuntimeConfig();
 
 const props = defineProps({
   data: {
@@ -13,9 +12,7 @@ const props = defineProps({
   },
 });
 
-const backHost = import.meta.server
-  ? config.server.backHost
-  : config.public.backHost;
+// images proxied through same-origin to hide backend
 
 const styles = useCssModule();
 const { $axios } = useNuxtApp();
@@ -66,7 +63,7 @@ watch(
 
           <div :class="styles.contentMain">
             <div :class="styles.contentImg">
-              <img :src="backHost + offer.mainImage[0].path" provider="none" />
+              <img :src="`/media${offer.mainImage[0].path}`" provider="none" />
             </div>
 
             <GeneralButtonThree :data="{
@@ -163,7 +160,7 @@ watch(
       </div>
 
       <div :class="styles.img">
-        <img :src="backHost + offer.background[0].path" alt="Bonus" />
+        <img :src="`/media${offer.background[0].path}`" alt="Bonus" />
       </div>
     </div>
   </section>
