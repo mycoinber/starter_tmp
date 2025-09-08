@@ -13,6 +13,7 @@ const props = defineProps({
 });
 
 // proxy images via same-origin route to hide backend
+// proxy images via same-origin route to hide backend
 
 const styles = useCssModule();
 const { $axios } = useNuxtApp();
@@ -62,7 +63,9 @@ watch(offer, (newData) => {
       <div :class="styles.contentMain">
         <div :class="styles.contentImg">
           <img v-if="data.offer?.background?.[0]?.path" :src="`/media${data.offer.background[0].path}`"
+          <img v-if="data.offer?.background?.[0]?.path" :src="`/media${data.offer.background[0].path}`"
             provider="none" />
+          <img v-else :src="`/media${data.hero[0]?.path}`" provider="none" />
           <img v-else :src="`/media${data.hero[0]?.path}`" provider="none" />
         </div>
 
