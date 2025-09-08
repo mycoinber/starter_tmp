@@ -87,20 +87,30 @@ const headMeta = computed(() => {
   const robotsOtherMetaFiltered = robotsOtherMeta.filter(m => !usedNames.has(m.name));
 
   // Итоговая сборка
+  // sanitize and coerce to strings to avoid Unhead errors
   const result = [
     ...baseMeta,
-    ...metaWithoutRobots.map(m => ({
-      [m.type === "property" ? "property" : m.type === "httpEquiv" ? "httpEquiv" : "name"]: m.key,
-      content: m.content
-    })),
+    ...metaWithoutRobots
+      .map(m => {
+        const attrName = m?.type === "property" ? "property" : m?.type === "httpEquiv" ? "httpEquiv" : "name";
+        const attrValue = m?.key != null ? String(m.key) : "";
+        if (!attrName || !attrValue) return null;
+        return {
+          [attrName]: attrValue,
+          content: m?.content != null ? String(m.content) : undefined,
+        };
+      })
+      .filter(Boolean),
     ...(robotsMeta ? [{
       name: "robots",
       content: robotsMeta.content || robotsMeta.value // под разные форматы
     }] : []),
-    ...robotsOtherMetaFiltered.map(m => ({
-      name: m.name,
-      content: m.content
-    })),
+    ...robotsOtherMetaFiltered
+      .map(m => ({
+        name: m?.name != null ? String(m.name) : "",
+        content: m?.content != null ? String(m.content) : undefined,
+      }))
+      .filter(m => m.name),
     ...globalMeta
   ];
 
