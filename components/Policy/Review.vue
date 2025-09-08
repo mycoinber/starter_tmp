@@ -9,6 +9,7 @@
       default: () => ({}),
     },
   });
+
 </script>
 
 <template>
@@ -29,12 +30,11 @@
           >
             <div :class="styles.head">
               <div :class="styles.image">
-                <NuxtImg
+                <img
                   v-for="(image, imgIndex) in review.images"
                   :key="imgIndex"
-                  :src="`unsplash${image?.path}`"
+                  :src="`/media${image?.path || ''}`"
                   :alt="image?.alt || 'review'"
-                  width="400"
                   itemprop="image"
                 />
               </div>

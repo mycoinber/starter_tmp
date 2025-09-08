@@ -31,6 +31,7 @@ const formattedDate = computed(() => {
     year: "numeric",
   });
 });
+
 </script>
 
 <template>
@@ -39,8 +40,7 @@ const formattedDate = computed(() => {
       <div :class="styles.wrapper">
         <div :class="styles.main">
           <div :class="styles.img">
-            <NuxtImg v-for="(image, imgIndex) in data.aiauthor.picture" :key="imgIndex" :src="`unsplash${image?.path}`"
-              :alt="image?.alt || 'author'" width="400" />
+            <img v-for="(image, imgIndex) in data.aiauthor.picture" :key="imgIndex" :src="`/media${image?.path || ''}`" :alt="image?.alt || 'author'" />
           </div>
 
           <div :class="styles.content">

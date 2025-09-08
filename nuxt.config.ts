@@ -85,7 +85,6 @@ export default defineNuxtConfig({
   runtimeConfig: {
     public: {
       siteId: process.env.SITE_ID,
-      backHost: process.env.BACK_HOST,
       globalHead: JSON.parse(
         readFileSync(resolve("site.json"), "utf-8")
       ) as any, // Приведение к any

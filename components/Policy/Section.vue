@@ -58,6 +58,7 @@ onMounted(() => {
       ssrContext?.modifiedHtml || processHtmlContent(props.data.content);
   }
 });
+
 </script>
 
 <template>
@@ -67,7 +68,7 @@ onMounted(() => {
         <div v-if="data.type === 'section'" v-html="contentHtml" :class="styles.content"></div>
 
         <div v-if="data.images?.length" :class="styles.img">
-          <NuxtImg :src="`unsplash${data.images[0]?.path}`" :alt="data.images[0]?.alt || 'image'" width="400" />
+          <img :src="`/media${data.images[0]?.path || ''}`" :alt="data.images[0]?.alt || 'image'" />
         </div>
       </div>
     </div>
