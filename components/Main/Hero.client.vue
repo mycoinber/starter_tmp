@@ -78,7 +78,7 @@ watch(offer, (newData) => {
     <div :class="styles.offers">
       <div v-for="section in heroSections" :key="section._id" :class="styles.offer">
         <div :class="styles.offerImg">
-          <NuxtImg v-if="section.images?.[0]?.path" :src="`/media${section.images[0].path}`" :alt="section.headline" provider="none" />
+          <img v-if="section.images?.[0]?.path" :src="`/media${section.images[0].path}`" :alt="section.headline" />
           <NuxtImg v-else src="/bg.png" :alt="section.headline" />
         </div>
 
