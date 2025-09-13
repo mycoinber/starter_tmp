@@ -1,5 +1,6 @@
 <script setup>
 import { useCssModule } from "vue";
+import { computed } from 'vue';
 const styles = useCssModule();
 
 const props = defineProps({
@@ -8,12 +9,23 @@ const props = defineProps({
         default: () => ({}),
     },
 });
+
+// Prefer offer.link (via composable) if offerId is provided or available globally, fallback to provided link
+const explicitOfferId = computed(() => props.data?.offerId || props.data?.offer?._id)
+const globalOfferId = useState('currentOfferId', () => null)
+const offerId = computed(() => explicitOfferId.value || globalOfferId.value)
+const { offer } = useOffer(offerId)
+// If explicit link is provided, respect it; otherwise use offer.link when available
+const resolvedLink = computed(() => props.data?.link ? props.data.link : (offer.value?.link || ''))
 </script>
 
 <template>
-    <NuxtLink :to="data.link" :class="styles.button" :target="data.target || '_self'" :rel="data.rel || ''">
+    <NuxtLink v-if="resolvedLink" :to="resolvedLink" :class="styles.button" :target="data.target || '_self'" :rel="data.rel || ''">
         {{ data.title }}
     </NuxtLink>
+    <button v-else type="button" :class="styles.button">
+        {{ data.title }}
+    </button>
 </template>
 
 <style lang="scss" scoped module>

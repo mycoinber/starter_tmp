@@ -10,7 +10,6 @@ const props = defineProps({
   },
 });
 
-console.log("props", props.data);
 
 const faqs = computed(() => {
   return (

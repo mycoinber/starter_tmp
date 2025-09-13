@@ -22,7 +22,6 @@ const route = useRoute();
 
 const slug = route.params.slug;
 
-console.log("slug", slug);
 
 const fetchPage = async (siteId, slug = null) => {
   const params = { siteId };
@@ -47,7 +46,6 @@ const { data, status, error, refresh, clear } = await useAsyncData(
   }
 );
 
-console.log("status1");
 
 const globalHeadRaw = import.meta.server
   ? config.server.globalHead
@@ -72,7 +70,6 @@ const globalHead = {
 };
 
 if (data.value && Object.keys(data.value).length > 0) {
-  console.log("data", data.value);
   const pageHead = data.value.head || {};
   const domain = data.value.domain || siteDomain;
 

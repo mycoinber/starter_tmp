@@ -1,6 +1,5 @@
 export default defineEventHandler(async (event) => {
   try {
-    console.log("test");
     const response = await fetch(
       `https://api.pbnmaster.online/sites/sitemap?siteId=67dff14b046e62b3966676dd`
     );
