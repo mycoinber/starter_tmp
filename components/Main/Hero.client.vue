@@ -57,7 +57,8 @@ const heroSections = computed(() => {
     </div>
 
     <div :class="styles.offers">
-      <div v-for="section in heroSections" :key="section._id" :class="styles.offer">
+      <template v-for="section in heroSections" :key="section._id">
+      <div :class="styles.offer">
         <div :class="styles.offerImg">
           <img v-if="section.images?.[0]?.path" :src="`/media${section.images[0].path}`" :alt="section.headline" />
           <NuxtImg v-else src="/bg.png" :alt="section.headline" />
@@ -84,6 +85,7 @@ const heroSections = computed(() => {
           </div>
         </div>
       </div>
+      </template>
     </div>
   </div>
 </template>
