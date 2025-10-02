@@ -199,6 +199,93 @@ const extractCode = (html) => {
   return s;
 };
 
+// 9a. Support head blocks of type 'html': split into meta/link/script/style/noscript
+const headHtmlBlocks = computed(() => headBlocks.value
+  .filter(b => b?.type === 'html')
+  .map(b => extractCode(b.content))
+);
+
+const parseAttrs = (str = '') => {
+  const attrs = {};
+  const re = /(\w[\w:-]*)\s*=\s*("([^"]*)"|'([^']*)'|([^\s>]+))/g;
+  let m;
+  while ((m = re.exec(str))) {
+    const key = m[1];
+    const val = m[3] ?? m[4] ?? m[5] ?? '';
+    attrs[key] = val;
+  }
+  return attrs;
+};
+
+const toHeadHtmlScripts = computed(() => {
+  const res = [];
+  const re = /<script([^>]*)>([\s\S]*?)<\/script>/gi;
+  for (const html of headHtmlBlocks.value) {
+    let m;
+    while ((m = re.exec(html))) {
+      const attrs = parseAttrs(m[1] || '');
+      const children = (m[2] || '').trim();
+      const entry = { ...attrs };
+      if (children) entry.innerHTML = children;
+      res.push(entry);
+    }
+  }
+  return res;
+});
+
+const toHeadHtmlStyles = computed(() => {
+  const res = [];
+  const re = /<style([^>]*)>([\s\S]*?)<\/style>/gi;
+  for (const html of headHtmlBlocks.value) {
+    let m;
+    while ((m = re.exec(html))) {
+      const attrs = parseAttrs(m[1] || '');
+      const children = (m[2] || '').trim();
+      res.push({ ...attrs, children });
+    }
+  }
+  return res;
+});
+
+const toHeadHtmlMeta = computed(() => {
+  const res = [];
+  const re = /<meta([^>]*)>/gi;
+  for (const html of headHtmlBlocks.value) {
+    let m;
+    while ((m = re.exec(html))) {
+      const attrs = parseAttrs(m[1] || '');
+      if (Object.keys(attrs).length) res.push(attrs);
+    }
+  }
+  return res;
+});
+
+const toHeadHtmlLinks = computed(() => {
+  const res = [];
+  const re = /<link([^>]*)>/gi;
+  for (const html of headHtmlBlocks.value) {
+    let m;
+    while ((m = re.exec(html))) {
+      const attrs = parseAttrs(m[1] || '');
+      if (Object.keys(attrs).length) res.push(attrs);
+    }
+  }
+  return res;
+});
+
+const toHeadHtmlNoScripts = computed(() => {
+  const res = [];
+  const re = /<noscript>([\s\S]*?)<\/noscript>/gi;
+  for (const html of headHtmlBlocks.value) {
+    let m;
+    while ((m = re.exec(html))) {
+      const children = (m[1] || '').trim();
+      if (children) res.push({ innerHTML: children });
+    }
+  }
+  return res;
+});
+
 const toHeadScripts = computed(() => headBlocks.value
   .filter(b => b?.type === 'js')
   .map((b, i) => ({ key: `head-js-${i}` , innerHTML: extractCode(b.content), type: 'text/javascript' }))
@@ -215,11 +302,11 @@ const toHeadLdJson = computed(() => headBlocks.value
 useHead({
   htmlAttrs: { lang: pageLang.value },
   title: pageHead.value.title || "Website",
-  meta: headMeta.value,
-  link: headLinks.value,
-  script: [...headScripts.value, ...toHeadScripts.value, ...toHeadLdJson.value],
-  style: toHeadStyles.value,
-  noscript: headNoScripts.value,
+  meta: [...headMeta.value, ...toHeadHtmlMeta.value],
+  link: [...headLinks.value, ...toHeadHtmlLinks.value],
+  script: [...headScripts.value, ...toHeadScripts.value, ...toHeadLdJson.value, ...toHeadHtmlScripts.value],
+  style: [...toHeadStyles.value, ...toHeadHtmlStyles.value],
+  noscript: [...headNoScripts.value, ...toHeadHtmlNoScripts.value],
 });
 
 // 8. Установи локаль, если нужно

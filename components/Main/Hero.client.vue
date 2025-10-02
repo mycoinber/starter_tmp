@@ -1,6 +1,5 @@
 <script setup>
 import { useCssModule } from "vue";
-import { useQuery } from "@tanstack/vue-query";
 import { useI18n } from 'vue-i18n';
 import { computed } from 'vue';
 const { t } = useI18n();
@@ -15,29 +14,11 @@ const props = defineProps({
 // proxy images via same-origin route to hide backend
 
 const styles = useCssModule();
-const { $axios } = useNuxtApp();
+
+const { offer } = useOffer(computed(() => props.data.offer?._id))
 
 const heroSections = computed(() => {
   return offer.value?.sections?.filter(section => section.type === 'hero') || [];
-});
-
-const fetchOffer = async () => {
-  const response = await $axios.get(`/public/offer/${props.data.offer._id}`);
-  return response.data;
-};
-
-const {
-  data: offer,
-  isPending,
-  isError,
-  error,
-  refetch,
-} = useQuery({
-  queryKey: computed(() => ["offers", props.data.offer]),
-  queryFn: fetchOffer,
-});
-
-watch(offer, (newData) => {
 });
 </script>
 
@@ -76,7 +57,8 @@ watch(offer, (newData) => {
     </div>
 
     <div :class="styles.offers">
-      <div v-for="section in heroSections" :key="section._id" :class="styles.offer">
+      <template v-for="section in heroSections" :key="section._id">
+      <div :class="styles.offer">
         <div :class="styles.offerImg">
           <img v-if="section.images?.[0]?.path" :src="`/media${section.images[0].path}`" :alt="section.headline" />
           <NuxtImg v-else src="/bg.png" :alt="section.headline" />
@@ -103,6 +85,7 @@ watch(offer, (newData) => {
           </div>
         </div>
       </div>
+      </template>
     </div>
   </div>
 </template>

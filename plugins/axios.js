@@ -2,7 +2,6 @@ import axios from "axios";
 import Cookies from "js-cookie";
 
 export default defineNuxtPlugin((nuxtApp) => {
-  console.log("teest");
   const config = useRuntimeConfig();
 
   // Убедитесь, что backurl правильно настроен
@@ -10,7 +9,6 @@ export default defineNuxtPlugin((nuxtApp) => {
     ? config.server.backHost
     : '/api';
 
-  console.log(backurl);
   const instance = axios.create({ baseURL: backurl });
 
   instance.interceptors.request.use(

@@ -40,6 +40,8 @@ const toggleMenu = () => {
   isMenuOpen.value = !isMenuOpen.value;
 };
 
+// Buttons now resolve offer link themselves via useOffer
+
 </script>
 
 <template>
@@ -63,13 +65,13 @@ const toggleMenu = () => {
         <ClientOnly>
           <div :class="styles.buttons">
             <GeneralButton :data="{
-              link: '#',
+              offerId: data.offer?._id,
               title: t('login'),
               rel: 'noopener noreferrer',
             }" />
 
             <GeneralButtonTwo :data="{
-              link: '#',
+              offerId: data.offer?._id,
               title: t('registration'),
               rel: 'noopener noreferrer',
             }" />
