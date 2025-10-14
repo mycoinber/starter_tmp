@@ -1,8 +1,13 @@
 <template>
   <NuxtLayout>
+    <Analytics />
     <NuxtPage />
   </NuxtLayout>
 </template>
+
+<script setup lang="ts">
+import { Analytics } from '@vercel/analytics/nuxt';
+</script>
 
 <!-- <script setup>
 import { useI18n } from 'vue-i18n';
