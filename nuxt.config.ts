@@ -5,7 +5,7 @@ export default defineNuxtConfig({
   devtools: { enabled: false },
   ssr: true,
   routeRules: {
-    '/**': { isr: 3600 },
+    "/**": { isr: 7200 },
   },
   css: ["~/assets/scss/main.scss"],
   modules: [
@@ -53,7 +53,7 @@ export default defineNuxtConfig({
     },
   },
   nitro: {
-    logLevel: 'debug',
+    logLevel: "debug",
     node: true,
     prerender: {
       // crawlLinks: true,
