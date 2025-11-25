@@ -12,6 +12,13 @@ const props = defineProps({
   },
 });
 
+const placeholderAvatar = "/avatar-placeholder.svg";
+
+const authorPictures = computed(() => {
+  const images = props.data?.aiauthor?.picture;
+  return Array.isArray(images) && images.length ? images : [null];
+});
+
 
 const publishedDateISO = computed(() => {
   const date = new Date(props.data.createdAt);
@@ -40,7 +47,12 @@ const formattedDate = computed(() => {
       <div :class="styles.wrapper">
         <div :class="styles.main">
           <div :class="styles.img">
-            <img v-for="(image, imgIndex) in data.aiauthor.picture" :key="imgIndex" :src="`/media${image?.path || ''}`" :alt="image?.alt || 'author'" />
+            <img
+              v-for="(image, imgIndex) in authorPictures"
+              :key="imgIndex"
+              :src="image?.path ? `/media${image.path}` : placeholderAvatar"
+              :alt="image?.alt || 'author'"
+            />
           </div>
 
           <div :class="styles.content">

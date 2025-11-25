@@ -10,6 +10,8 @@
     },
   });
 
+  const placeholderAvatar = "/avatar-placeholder.svg";
+
 </script>
 
 <template>
@@ -32,11 +34,19 @@
           >
             <div :class="styles.head">
               <div :class="styles.image">
+                <template v-if="review.author?.picture?.length">
+                  <img
+                    v-for="(image, imgIndex) in review.author.picture"
+                    :key="imgIndex"
+                    :src="image?.path ? `/media${image.path}` : placeholderAvatar"
+                    :alt="image?.alt || 'author'"
+                    itemprop="image"
+                  />
+                </template>
                 <img
-                  v-for="(image, imgIndex) in review.author.picture"
-                  :key="imgIndex"
-                  :src="`/media${image?.path || ''}`"
-                  :alt="image?.alt || 'author'"
+                  v-else
+                  :src="placeholderAvatar"
+                  alt="author"
                   itemprop="image"
                 />
               </div>
