@@ -9,6 +9,7 @@
 
 <script setup>
 import { useI18n } from "vue-i18n";
+import { useMissingPageRedirect } from "~/composables/useMissingPageRedirect";
 
 const { locale } = useI18n();
 const url = useRequestURL();
@@ -20,6 +21,21 @@ const siteId = import.meta.server ? config.server.siteId : config.public.siteId;
 const slug = route.params.slug || null;
 
 const { data, status, error } = await usePageData(siteId, slug);
+
+const homeHasPayload = Boolean(data.value?.article);
+const homeHasRedirect = Boolean(data.value?.redirect?.to);
+const requestedPath = route.fullPath || route.path || "/";
+
+if (!homeHasPayload && !homeHasRedirect) {
+  const redirectResult = await useMissingPageRedirect({
+    siteId,
+    requestedPath,
+    fallbackPath: "/",
+  });
+  if (redirectResult) {
+    await navigateTo(redirectResult.to, { redirectCode: redirectResult.code });
+  }
+}
 
 // ---------- HEAD LOGIC ----------
 
