@@ -5,6 +5,12 @@ export default defineNuxtConfig({
   devtools: { enabled: false },
   ssr: true,
   routeRules: {
+    "/robots.txt": {
+      isr: false,
+      headers: {
+        "cache-control": "no-store, no-cache, must-revalidate, max-age=0",
+      },
+    },
     "/**": { isr: 7200 },
   },
   css: ["~/assets/scss/main.scss"],
