@@ -111,14 +111,15 @@ const globalHead = {
     link: [{ rel: "canonical", href: `${domain}${data.value.homePage ? '' : `/${data.value.slug}`}/` }],
   });
 
-  useHead({
+  if (data.value.baseHreflangEnabled !== false) {
+    useHead({
       link: [{
         rel: "alternate",
         hreflang: data.value.lang || "en",
         href: `${siteDomain}${data.value.homePage ? '' : `/${data.value.slug}`}/`,
-      },
-    ],
-  });
+      }],
+    });
+  }
 
   if (data.value.alters && Array.isArray(data.value.alters)) {
     useHead({

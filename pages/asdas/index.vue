@@ -115,14 +115,15 @@ if (data.value && Object.keys(data.value).length > 0) {
 
   });
 
-  useHead({
+  if (data.value.baseHreflangEnabled !== false) {
+    useHead({
       link: [{
         rel: "alternate",
         hreflang: data.value.lang || "en",
         href: `${siteDomain}/`,
-      },
-    ],
-  });
+      }],
+    });
+  }
 
   if (data.value.alters && Array.isArray(data.value.alters)) {
     useHead({

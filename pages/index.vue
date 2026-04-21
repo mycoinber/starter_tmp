@@ -44,6 +44,7 @@ const pageHead = computed(() => data.value?.head || {});
 const pageLang = computed(() => data.value?.lang || "en");
 const pageDomain = computed(() => data.value?.domain || siteDomain);
 const pageSlug = computed(() => data.value?.slug || "");
+const baseHreflangEnabled = computed(() => data.value?.baseHreflangEnabled !== false);
 
 const globalHeadRaw = import.meta.server
   ? config.server.globalHead
@@ -136,7 +137,9 @@ const headMeta = computed(() => {
 // 4. Сбор всех link
 const headLinks = computed(() => [
   { rel: "canonical", href: `${pageDomain.value}/` },
-  { rel: "alternate", hreflang: pageLang.value, href: `${siteDomain}/` },
+  ...(baseHreflangEnabled.value
+    ? [{ rel: "alternate", hreflang: pageLang.value, href: `${siteDomain}/` }]
+    : []),
   ...(Array.isArray(data.value?.alters) ? data.value.alters.map(alter => ({
     rel: "alternate",
     hreflang: alter.hreflang,
